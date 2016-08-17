@@ -9,3 +9,6 @@ temp
 .settings/
 .htaccess
 te_ST/
+*~
+\#*
+.dir-locals.el
