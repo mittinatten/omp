@@ -174,6 +174,14 @@ class Monograph extends Submission {
 		return $this->setData('supportingAgencies', $title, $locale);
 	}
 
+	function getEmbargoMonths() {
+		return $this->getData('embargoMonths');
+	}
+
+	function setEmbargoMonths($months = 0) {
+		return $this->setData('embargoMonths', $months);
+	}
+
 	/**
 	 * Get whether or not this monograph has metadata approved to
 	 * be available in catalog.

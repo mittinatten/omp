@@ -35,6 +35,9 @@ class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 		$seriesOptions = array('0' => __('submission.submit.selectSeries')) + $seriesDao->getTitlesByPressId($this->context->getId(), true);
 		$templateMgr->assign('seriesOptions', $seriesOptions);
 
+		$embargoOptions = array('0' => "No embargo",  '6' => '6  months', '12' => '12 months', '24' => '24 months');
+		$templateMgr->assign('embargoOptions', $embargoOptions);
+
 		return parent::fetch($request);
 	}
 
@@ -47,6 +50,7 @@ class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 				'seriesId' => $this->submission->getSeriesId(),
 				'seriesPosition' => $this->submission->getSeriesPosition(),
 				'workType' => $this->submission->getWorkType(),
+				'embargoMonths' => $this->submission->getEmbargoMonths(),
 			));
 		} else {
 			parent::initData();
@@ -58,7 +62,7 @@ class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 	 */
 	function readInputData() {
 		$this->readUserVars(array(
-			'workType', 'seriesId', 'seriesPosition',
+			'workType', 'seriesId', 'seriesPosition', 'embargoMonths',
 		));
 		parent::readInputData();
 	}
@@ -90,6 +94,7 @@ class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 		$submission->setWorkType($this->getData('workType'));
 		$submission->setSeriesId($this->getData('seriesId'));
 		$submission->setSeriesPosition($this->getData('seriesPosition'));
+		$submission->setEmbargoMonths($this->getData('embargoMonths'));
 		parent::setSubmissionData($submission);
 	}
 }

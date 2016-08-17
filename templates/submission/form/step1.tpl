@@ -14,8 +14,14 @@
 		{fbvElement type="radio" name="workType" id="isEditedVolume-1" value=$smarty.const.WORK_TYPE_EDITED_VOLUME checked=$workType|compare:$smarty.const.WORK_TYPE_EDITED_VOLUME label="submission.workflowType.editedVolume" disabled=$submissionId}
 	{/fbvFormSection}
 {/capture}
+
 {capture assign="additionalFormContent2"}
 	{include file="submission/form/series.tpl" includeSeriesPosition=false}
+	{if count($embargoOptions) > 1}
+		{fbvFormSection label="submission.embargo"}
+			{fbvElement type="select" from=$embargoOptions id="embargoMonths" label="submission.embargoMonths" size=$fbvStyles.size.SMALL disable=$readOnly}
+		{/fbvFormSection}
+	{/if}
 {/capture}
 
 {include file="core:submission/form/step1.tpl"}

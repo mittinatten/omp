@@ -23,6 +23,8 @@
 	<message key="submission.workflowType.description">A monograph is a work authored wholly by one or more authors. An edited volume has different authors for each chapter (with the chapter details entered later in this process.)</message>
 	<message key="submission.workflowType.editedVolume">Edited Volume: Authors are associated with their own chapter.</message>
 	<message key="submission.workflowType.authoredWork">Monograph: Authors are associated with the book as a whole.</message>
+	<message key="submission.embargo">Embargo</message>
+	<message key="submission.embargoMonths">Months until work is released online (0 recommended)</message>
 	<message key="submission.monograph">Monograph</message>
 	<message key="submission.published">Production Ready</message>
 	<message key="submission.fairCopy">Fair Copy</message>
