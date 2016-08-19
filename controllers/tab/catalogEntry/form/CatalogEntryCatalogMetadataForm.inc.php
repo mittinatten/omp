@@ -220,6 +220,13 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		$publishedMonograph->setAudienceRangeTo($this->getData('audienceRangeTo'));
 		$publishedMonograph->setAudienceRangeExact($this->getData('audienceRangeExact'));
 
+		$embargoMonths = $monograph->getEmbargoMonths();
+		if ($embargoMonths > 0) {
+			$date = new DateTime(Core::getCurrentDate());
+			$date->add(new DateInterval('P' . $embargoMonths . 'M'));
+			$publishedMonograph->setEmbargoUntil(date_format($date, 'Y-m-d'));
+		}
+
 		// If a cover image was uploaded, deal with it.
 		if ($temporaryFileId = $this->getData('temporaryFileId')) {
 			// Fetch the temporary file storing the uploaded library file

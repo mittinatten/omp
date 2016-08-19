@@ -512,6 +512,7 @@
 			<NOTNULL/>
 		</field>
 		<field name="date_published" type="T"/>
+		<field name="embargo_until" type="T"/>
 		<field name="audience" type="C2" size="255"/>
 		<field name="audience_range_qualifier" type="C2" size="255"/>
 		<field name="audience_range_from" type="C2" size="255"/>

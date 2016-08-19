@@ -174,11 +174,19 @@ class Monograph extends Submission {
 		return $this->setData('supportingAgencies', $title, $locale);
 	}
 
+	/**
+	 * Get number of months of embargo from date of publication
+	 * @return int
+	 */
 	function getEmbargoMonths() {
 		return $this->getData('embargoMonths');
 	}
 
-	function setEmbargoMonths($months = 0) {
+	/**
+	 * Set number of months of embargo from date of publication
+	 * @param $months int
+	 */
+	function setEmbargoMonths($months) {
 		return $this->setData('embargoMonths', $months);
 	}
 

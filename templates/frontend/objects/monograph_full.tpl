@@ -152,27 +152,29 @@
 
 
 								{* Display any files that are assigned to this chapter *}
-								{pluck_files assign="chapterFiles" files=$availableFiles by="chapter" value=$chapterId}
-								{if $chapterFiles|@count}
-									<div class="files">
+								{if not $underEmbargo}
+									{pluck_files assign="chapterFiles" files=$availableFiles by="chapter" value=$chapterId}
+									{if $chapterFiles|@count}
+										<div class="files">
 
-										{* Display chapter files sorted by publication format so that they are ordered
-										   consistently across all chapters. *}
-										{foreach from=$publicationFormats item=format}
-											{pluck_files assign="pubFormatFiles" files=$chapterFiles by="publicationFormat" value=$format->getId()}
+											{* Display chapter files sorted by publication format so that they are ordered
+											   consistently across all chapters. *}
+											{foreach from=$publicationFormats item=format}
+												{pluck_files assign="pubFormatFiles" files=$chapterFiles by="publicationFormat" value=$format->getId()}
 
-											{foreach from=$pubFormatFiles item=file}
+												{foreach from=$pubFormatFiles item=file}
 
-												{* Use the publication format name in the download link unless a pub format has multiple files *}
-												{assign var=useFileName value=false}
-												{if $pubFormatFiles|@count > 1}
-													{assign var=useFileName value=true}
-												{/if}
+													{* Use the publication format name in the download link unless a pub format has multiple files *}
+													{assign var=useFileName value=false}
+													{if $pubFormatFiles|@count > 1}
+														{assign var=useFileName value=true}
+													{/if}
 
-												{include file="frontend/components/downloadLink.tpl" downloadFile=$file monograph=$monograph publicationFormat=$format currency=$currency useFilename=$useFileName}
+													{include file="frontend/components/downloadLink.tpl" downloadFile=$file monograph=$monograph publicationFormat=$format currency=$currency useFilename=$useFileName}
+												{/foreach}
 											{/foreach}
-										{/foreach}
-									</div>
+										</div>
+									{/if}
 								{/if}
 							</li>
 						{/foreach}
@@ -234,60 +236,62 @@
 			{/if}
 
 			{* Any non-chapter files and remote resources *}
-			{pluck_files assign=nonChapterFiles files=$availableFiles by="chapter" value=0}
-			{if $nonChapterFiles|@count}
-				<div class="item files">
-					{foreach from=$publicationFormats item=format}
-						{assign var=publicationFormatId value=$format->getId()}
+			{if not $underEmbargo}
+				{pluck_files assign=nonChapterFiles files=$availableFiles by="chapter" value=0}
+				{if $nonChapterFiles|@count}
+					<div class="item files">
+						{foreach from=$publicationFormats item=format}
+							{assign var=publicationFormatId value=$format->getId()}
 
-						{* Remote resources *}
-						{if $format->getRemoteUrl()}
-							{* Only one resource allowed per format, so mimic single-file-download *}
-							<div class="pub_format_{$publicationFormatId|escape} pub_format_remote">
-								<a href="{$format->getRemoteURL()|escape}" target="_blank" class="remote_resource">
-									{$format->getLocalizedName()|escape}
-								</a>
-							</div>
-
-						{* File downloads *}
-						{else}
-
-							{* Only display files that haven't been displayed in a chapter *}
-							{pluck_files assign=pubFormatFiles files=$nonChapterFiles by="publicationFormat" value=$format->getId()}
-
-							{* Use a simplified presentation if only one file exists *}
-							{if $pubFormatFiles|@count == 1}
-								<div class="pub_format_{$publicationFormatId|escape} pub_format_single">
-									{foreach from=$pubFormatFiles item=file}
-										{include file="frontend/components/downloadLink.tpl" downloadFile=$file monograph=$monograph publicationFormat=$format currency=$currency}
-									{/foreach}
-								</div>
-
-							{* Use an itemized presentation if multiple files exist *}
-							{elseif $pubFormatFiles|@count > 1}
-								<div class="pub_format_{$publicationFormatId|escape}">
-									<span class="label">
+							{* Remote resources *}
+							{if $format->getRemoteUrl()}
+								{* Only one resource allowed per format, so mimic single-file-download *}
+								<div class="pub_format_{$publicationFormatId|escape} pub_format_remote">
+									<a href="{$format->getRemoteURL()|escape}" target="_blank" class="remote_resource">
 										{$format->getLocalizedName()|escape}
-									</span>
-									<span class="value">
-										<ul>
-											{foreach from=$pubFormatFiles item=file}
-												<li>
-													<span class="name">
-														{$file->getLocalizedName()|escape}
-													</span>
-													<span class="link">
-														{include file="frontend/components/downloadLink.tpl" downloadFile=$file monograph=$monograph publicationFormat=$format currency=$currency useFilename=true}
-													</span>
-												</li>
-											{/foreach}
-										</ul>
-									</span><!-- .value -->
+									</a>
 								</div>
+
+							{* File downloads *}
+							{else}
+
+								{* Only display files that haven't been displayed in a chapter *}
+								{pluck_files assign=pubFormatFiles files=$nonChapterFiles by="publicationFormat" value=$format->getId()}
+
+								{* Use a simplified presentation if only one file exists *}
+								{if $pubFormatFiles|@count == 1}
+									<div class="pub_format_{$publicationFormatId|escape} pub_format_single">
+										{foreach from=$pubFormatFiles item=file}
+											{include file="frontend/components/downloadLink.tpl" downloadFile=$file monograph=$monograph publicationFormat=$format currency=$currency}
+										{/foreach}
+									</div>
+
+								{* Use an itemized presentation if multiple files exist *}
+								{elseif $pubFormatFiles|@count > 1}
+									<div class="pub_format_{$publicationFormatId|escape}">
+										<span class="label">
+											{$format->getLocalizedName()|escape}
+										</span>
+										<span class="value">
+											<ul>
+												{foreach from=$pubFormatFiles item=file}
+													<li>
+														<span class="name">
+															{$file->getLocalizedName()|escape}
+														</span>
+														<span class="link">
+															{include file="frontend/components/downloadLink.tpl" downloadFile=$file monograph=$monograph publicationFormat=$format currency=$currency useFilename=true}
+														</span>
+													</li>
+												{/foreach}
+											</ul>
+										</span><!-- .value -->
+									</div>
+								{/if}
 							{/if}
-						{/if}
-					{/foreach}{* Publication formats loop *}
-				</div>
+						{/foreach}{* Publication formats loop *}
+					</div>
+				{/if}
 			{/if}
 
 			{* Series *}
@@ -360,123 +364,126 @@
 			{/if}
 
 			{* Publication formats *}
-			{if count($publicationFormats)}
-				{foreach from=$publicationFormats item="publicationFormat"}
-					{if $publicationFormat->getIsApproved()}
+			{if $underEmbargo}
+				<div class="item">Under embargo until {$embargoUntil}</div>
+			{else}
+				{if count($publicationFormats)}
+					{foreach from=$publicationFormats item="publicationFormat"}
+						{if $publicationFormat->getIsApproved()}
 
-						{assign var=identificationCodes value=$publicationFormat->getIdentificationCodes()}
-						{assign var=identificationCodes value=$identificationCodes->toArray()}
-						{assign var=publicationDates value=$publicationFormat->getPublicationDates()}
-						{assign var=publicationDates value=$publicationDates->toArray()}
-						{assign var=hasPubId value=false}
-						{if $enabledPubIdTypes|@count}
-							{foreach from=$enabledPubIdTypes item=pubIdType}
-								{if $publicationFormat->getStoredPubId($pubIdType)}
-									{php}break;{/php}
-								{/if}
-							{/foreach}
-						{/if}
-
-						{* Skip if we don't have any information to print about this pub format *}
-						{if !$identificationCodes && !$publicationDates && !$hasPubId && !$publicationFormat->getPhysicalFormat()}
-							{php}continue;{/php}
-						{/if}
-
-						<div class="item publication_format">
-
-							{* Only add the format-specific heading if multiple publication formats exist *}
-							{if count($publicationFormats) > 1}
-								<h3 class="pkp_screen_reader">
-									{assign var=publicationFormatName value=$publicationFormat->getLocalizedName()}
-									{translate key="monograph.publicationFormatDetails" format=$publicationFormatName|escape}
-								</h3>
-
-								<div class="sub_item item_heading format">
-									<div class="label">
-										{$publicationFormat->getLocalizedName()|escape}
-									</div>
-								</div>
-							{else}
-								<h3 class="pkp_screen_reader">
-									{translate key="monograph.miscellaneousDetails"}
-								</h3>
-							{/if}
-
-
-							{* DOI's and other identification codes *}
-							{if $identificationCodes}
-								{foreach from=$identificationCodes item=identificationCode}
-									<div class="sub_item identification_code">
-										<div class="label">
-											{$identificationCode->getNameForONIXCode()|escape}
-										</div>
-										<div class="value">
-											{$identificationCode->getValue()|escape}
-										</div>
-									</div>
-								{/foreach}
-							{/if}
-
-							{* Dates of publication *}
-							{if $publicationDates}
-								{foreach from=$publicationDates item=publicationDate}
-									<div class="sub_item date">
-										<div class="label">
-											{$publicationDate->getNameForONIXCode()|escape}
-										</div>
-										<div class="value">
-											{assign var=dates value=$publicationDate->getReadableDates()}
-											{* note: these dates have dateFormatShort applied to them in getReadableDates() if they need it *}
-											{if $publicationDate->isFreeText() || $dates|@count == 1}
-												{$dates[0]|escape}
-											{else}
-												{* @todo the &mdash; ought to be translateable *}
-												{$dates[0]|escape}&mdash;{$dates[1]|escape}
-											{/if}
-											{if $publicationDate->isHijriCalendar()}
-												<div class="hijri">
-													{translate key="common.dateHijri"}
-												</div>
-											{/if}
-										</div>
-									</div>
-								{/foreach}
-							{/if}
-
-							{* PubIDs *}
+							{assign var=identificationCodes value=$publicationFormat->getIdentificationCodes()}
+							{assign var=identificationCodes value=$identificationCodes->toArray()}
+							{assign var=publicationDates value=$publicationFormat->getPublicationDates()}
+							{assign var=publicationDates value=$publicationDates->toArray()}
+							{assign var=hasPubId value=false}
 							{if $enabledPubIdTypes|@count}
 								{foreach from=$enabledPubIdTypes item=pubIdType}
-									{assign var=storedPubId value=$publicationFormat->getStoredPubId($pubIdType)}
-									{if $storedPubId != ''}
-										<div class="sub_item pubid {$publicationFormat->getId()|escape}">
-											<div class="label">
-												{$pubIdType}
-											</div>
-											<div class="value">
-												{$storedPubId|escape}
-											</div>
-										</div>
+									{if $publicationFormat->getStoredPubId($pubIdType)}
+										{php}break;{/php}
 									{/if}
 								{/foreach}
 							{/if}
 
-							{* Physical dimensions *}
-							{if $publicationFormat->getPhysicalFormat()}
-								<div class="sub_item dimensions">
-									<div class="label">
-										{translate key="monograph.publicationFormat.productDimensions"}
-									</div>
-									<div class="value">
-										{$publicationFormat->getDimensions()|escape}
-									</div>
-								</div>
+							{* Skip if we don't have any information to print about this pub format *}
+							{if !$identificationCodes && !$publicationDates && !$hasPubId && !$publicationFormat->getPhysicalFormat()}
+								{php}continue;{/php}
 							{/if}
-						</div>
-					{/if}
-				{/foreach}
-			{/if}
 
-			{call_hook name="Templates::Catalog::Book::Details"}
+							<div class="item publication_format">
+
+								{* Only add the format-specific heading if multiple publication formats exist *}
+								{if count($publicationFormats) > 1}
+									<h3 class="pkp_screen_reader">
+										{assign var=publicationFormatName value=$publicationFormat->getLocalizedName()}
+										{translate key="monograph.publicationFormatDetails" format=$publicationFormatName|escape}
+									</h3>
+
+									<div class="sub_item item_heading format">
+										<div class="label">
+											{$publicationFormat->getLocalizedName()|escape}
+										</div>
+									</div>
+								{else}
+									<h3 class="pkp_screen_reader">
+										{translate key="monograph.miscellaneousDetails"}
+									</h3>
+								{/if}
+
+
+								{* DOI's and other identification codes *}
+								{if $identificationCodes}
+									{foreach from=$identificationCodes item=identificationCode}
+										<div class="sub_item identification_code">
+											<div class="label">
+												{$identificationCode->getNameForONIXCode()|escape}
+											</div>
+											<div class="value">
+												{$identificationCode->getValue()|escape}
+											</div>
+										</div>
+									{/foreach}
+								{/if}
+
+								{* Dates of publication *}
+								{if $publicationDates}
+									{foreach from=$publicationDates item=publicationDate}
+										<div class="sub_item date">
+											<div class="label">
+												{$publicationDate->getNameForONIXCode()|escape}
+											</div>
+											<div class="value">
+												{assign var=dates value=$publicationDate->getReadableDates()}
+												{* note: these dates have dateFormatShort applied to them in getReadableDates() if they need it *}
+												{if $publicationDate->isFreeText() || $dates|@count == 1}
+													{$dates[0]|escape}
+												{else}
+													{* @todo the &mdash; ought to be translateable *}
+													{$dates[0]|escape}&mdash;{$dates[1]|escape}
+												{/if}
+												{if $publicationDate->isHijriCalendar()}
+													<div class="hijri">
+														{translate key="common.dateHijri"}
+													</div>
+												{/if}
+											</div>
+										</div>
+									{/foreach}
+								{/if}
+
+								{* PubIDs *}
+								{if $enabledPubIdTypes|@count}
+									{foreach from=$enabledPubIdTypes item=pubIdType}
+										{assign var=storedPubId value=$publicationFormat->getStoredPubId($pubIdType)}
+										{if $storedPubId != ''}
+											<div class="sub_item pubid {$publicationFormat->getId()|escape}">
+												<div class="label">
+													{$pubIdType}
+												</div>
+												<div class="value">
+													{$storedPubId|escape}
+												</div>
+											</div>
+										{/if}
+									{/foreach}
+								{/if}
+
+								{* Physical dimensions *}
+								{if $publicationFormat->getPhysicalFormat()}
+									<div class="sub_item dimensions">
+										<div class="label">
+											{translate key="monograph.publicationFormat.productDimensions"}
+										</div>
+										<div class="value">
+											{$publicationFormat->getDimensions()|escape}
+										</div>
+									</div>
+								{/if}
+							</div>
+						{/if}
+					{/foreach}
+				{/if}
+				{call_hook name="Templates::Catalog::Book::Details"}
+			{/if}
 
 		</div><!-- .details -->
 	</div><!-- .row -->

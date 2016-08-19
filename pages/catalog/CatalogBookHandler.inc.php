@@ -61,6 +61,15 @@ class CatalogBookHandler extends Handler {
 
 		$templateMgr->assign('publishedMonograph', $publishedMonograph);
 
+		// Provide embargo info to template
+		if ($publishedMonograph->isUnderEmbargo()) {
+			$templateMgr->assign('underEmbargo', 1);
+			$date = new DateTime($publishedMonograph->getEmbargoUntil());
+			$templateMgr->assign('embargoUntil', $date->format('Y-m-d'));
+		} else {
+			$templateMgr->assign('underEmbargo', 0);
+		}
+
 		// Provide the publication formats to the template
 		$publicationFormats = $publishedMonograph->getPublicationFormats(true);
 		$availablePublicationFormats = array();
@@ -101,28 +110,32 @@ class CatalogBookHandler extends Handler {
 		));
 
 		// e-Commerce
-		import('classes.payment.omp.OMPPaymentManager');
-		$ompPaymentManager = new OMPPaymentManager($request);
-		$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO');
-		if ($ompPaymentManager->isConfigured()) {
-			$availableFiles = array_filter(
-				$submissionFileDao->getLatestRevisions($publishedMonograph->getId()),
-				create_function('$a', 'return $a->getViewable() && $a->getDirectSalesPrice() !== null && $a->getAssocType() == ASSOC_TYPE_PUBLICATION_FORMAT;')
-			);
+		if ($publishedMonograph->isUnderEmbargo()) {
+			$templateMgr->assign('availableFiles', null);
+		} else {
+			import('classes.payment.omp.OMPPaymentManager');
+			$ompPaymentManager = new OMPPaymentManager($request);
+			$submissionFileDao = DAORegistry::getDAO('SubmissionFileDAO');
+			if ($ompPaymentManager->isConfigured()) {
+				$availableFiles = array_filter(
+					$submissionFileDao->getLatestRevisions($publishedMonograph->getId()),
+					create_function('$a', 'return $a->getViewable() && $a->getDirectSalesPrice() !== null && $a->getAssocType() == ASSOC_TYPE_PUBLICATION_FORMAT;')
+				);
 
-			// Only pass files in pub formats that are also available
-			$filteredAvailableFiles = array();
-			foreach ($availableFiles as $file) {
-				foreach ($availablePublicationFormats as $format) {
-					if ($file->getAssocId() == $format->getId()) {
-						$filteredAvailableFiles[] = $file;
-						break;
+				// Only pass files in pub formats that are also available
+				$filteredAvailableFiles = array();
+				foreach ($availableFiles as $file) {
+					foreach ($availablePublicationFormats as $format) {
+						if ($file->getAssocId() == $format->getId()) {
+							$filteredAvailableFiles[] = $file;
+							break;
+						}
 					}
 				}
-			}
 
-			// Expose variables to template
-			$templateMgr->assign('availableFiles', $filteredAvailableFiles);
+				// Expose variables to template
+				$templateMgr->assign('availableFiles', $filteredAvailableFiles);
+			}
 		}
 
 		// Provide the currency to the template, if configured.

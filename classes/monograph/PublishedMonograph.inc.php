@@ -128,6 +128,34 @@ class PublishedMonograph extends Monograph {
 	}
 
 	/**
+	 * Get the embargoUntil field for the published monograph.
+	 * @return date
+	 */
+	function getEmbargoUntil() {
+		return $this->getData('embargoUntil');
+	}
+
+	/**
+	 * Set the embargoUntil field for the published monograph.
+	 * @param $date string (Y-m-d)
+	 */
+	function setEmbargoUntil($date) {
+		return $this->setData('embargoUntil', $date);
+	}
+
+	/**
+	 * Is the monograph under embargo?
+	 * @return boolean
+	 */
+	function isUnderEmbargo() {
+		$embargo = $this->getEmbargoUntil();
+		if (!is_null($embargo)) {
+			return (Core::getCurrentDate() < $embargo);
+		}
+		return false;
+	}
+
+	/**
 	 * Retrieves the assigned publication formats for this submission
 	 * @param $onlyApproved boolean whether to fetch only those that are approved for publication.
 	 * @return array PublicationFormat
