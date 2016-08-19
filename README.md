@@ -1,5 +1,11 @@
 # Open Monograph Press
 
+This fork explores the possibilities of using OMP for delivery,
+administration and printing of PhD theses. Some theses can have
+embargo times, or include articles that can not be published openly for
+copyright reasons, and in some cases the author may wish to only store
+electronic versions of the thesis in closed archives.
+
 > Open Monograph Press (OMP) has been developed by the Public Knowledge Project. For general information about OMP and other open research systems, visit the [PKP web site][pkp].
 
 [![Build Status](https://travis-ci.org/pkp/omp.svg?branch=master)](https://travis-ci.org/pkp/omp)
