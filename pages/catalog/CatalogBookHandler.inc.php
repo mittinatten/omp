@@ -171,6 +171,11 @@ class CatalogBookHandler extends Handler {
 		$this->setupTemplate($request, $publishedMonograph);
 		$press = $request->getPress();
 
+		// secure backdoor access, i.e. doesn't need to be pretty
+		if ($publishedMonograph->isUnderEmbargo()) {
+			fatalError('This object is under embargo until ' . $publishedMonograph->getEmbargoUntil());
+		}
+		
 		$monographId = array_shift($args); // Validated thru auth
 		$representationId = array_shift($args);
 		$bestFileId = array_shift($args);
