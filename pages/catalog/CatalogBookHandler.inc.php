@@ -64,7 +64,7 @@ class CatalogBookHandler extends Handler {
 		// Provide embargo info to template
 		if ($publishedMonograph->isUnderEmbargo()) {
 			$templateMgr->assign('underEmbargo', 1);
-			$date = new DateTime($publishedMonograph->getEmbargoUntil());
+			$date = $publishedMonograph->getEmbargoUntil();
 			$templateMgr->assign('embargoUntil', $date->format('Y-m-d'));
 		} else {
 			$templateMgr->assign('underEmbargo', 0);
@@ -173,7 +173,7 @@ class CatalogBookHandler extends Handler {
 
 		// secure backdoor access, i.e. doesn't need to be pretty
 		if ($publishedMonograph->isUnderEmbargo()) {
-			fatalError('This object is under embargo until ' . $publishedMonograph->getEmbargoUntil());
+			fatalError('This object is under embargo until ' . $publishedMonograph->getEmbargoUntil()->format('Y-m-d'));
 		}
 		
 		$monographId = array_shift($args); // Validated thru auth

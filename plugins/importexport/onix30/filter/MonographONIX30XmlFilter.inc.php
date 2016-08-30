@@ -443,11 +443,25 @@ class MonographONIX30XmlFilter extends NativeExportFilter {
 
 		$abstract = strip_tags($submission->getLocalizedAbstract());
 
+		$hasEmbargo = false;
+		$embargoDateNode = null;
+		if (is_a($submission, 'PublishedMonograph') && $submission->isUnderEmbargo()) {
+			$date = $submission->getEmbargoUntil();
+			$hasEmbargo = true;
+			$embargoDateNode = $doc->createElementNS($deployment->getNamespace(), 'ContentDate');
+			$embargoDateNode->appendChild($this->_buildTextNode($doc, 'ContentDateRole', '14'));
+			$dateNode = $doc->createElementNS($deployment->getNamespace(), 'Date');
+			$dateNode->setAttribute('dateformat', '00');
+			$dateNode->appendChild($doc->createTextNode($date->format('Ymd')));
+			$embargoDateNode->appendChild($dateNode);
+		}
+
 		$textContentNode = $doc->createElementNS($deployment->getNamespace(), 'TextContent');
 		$collateralDetailNode->appendChild($textContentNode);
 		$textContentNode->appendChild($this->_buildTextNode($doc, 'TextType', '02')); // short description
 		$textContentNode->appendChild($this->_buildTextNode($doc, 'ContentAudience', '00')); // Any audience
 		$textContentNode->appendChild($this->_buildTextNode($doc, 'Text', substr($abstract, 0, 250))); // Any audience
+		if ($hasEmbargo) $textContentNode->appendChild($embargoDateNode->cloneNode(true));
 
 		$textContentNode = $doc->createElementNS($deployment->getNamespace(), 'TextContent');
 		$collateralDetailNode->appendChild($textContentNode);
@@ -455,6 +469,7 @@ class MonographONIX30XmlFilter extends NativeExportFilter {
 		$textContentNode->appendChild($this->_buildTextNode($doc, 'TextType', '03')); // description
 		$textContentNode->appendChild($this->_buildTextNode($doc, 'ContentAudience', '00')); // Any audience
 		$textContentNode->appendChild($this->_buildTextNode($doc, 'Text', $abstract)); // Any audience
+		if ($hasEmbargo) $textContentNode->appendChild($embargoDateNode->cloneNode(true));
 
 		/* --- Publishing Detail --- */
 
