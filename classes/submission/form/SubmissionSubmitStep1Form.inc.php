@@ -15,6 +15,7 @@
 
 import('lib.pkp.classes.submission.form.PKPSubmissionSubmitStep1Form');
 import('classes.monograph.Monograph'); // WORK_TYPE_... constants for form
+import('classes.press.EmbargoSettingsDAO');
 
 class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 	/**
@@ -35,8 +36,8 @@ class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 		$seriesOptions = array('0' => __('submission.submit.selectSeries')) + $seriesDao->getTitlesByPressId($this->context->getId(), true);
 		$templateMgr->assign('seriesOptions', $seriesOptions);
 
-		$embargoOptions = array('0' => "No embargo",  '6' => '6  months', '12' => '12 months', '24' => '24 months');
-		$templateMgr->assign('embargoOptions', $embargoOptions);
+		$embargoSettingsDao = DAORegistry::getDAO('EmbargoSettingsDAO');
+		$templateMgr->assign('embargoOptions', $embargoSettingsDao->getOptions());
 
 		return parent::fetch($request);
 	}

@@ -1050,4 +1050,18 @@
 		<field name="payment_method_plugin_name" type="C2" size="80" />
 		<descr>Logs completed (fulfilled) payments.</descr>
 	</table>
+
+	<!--
+	  *
+	  * TABLE embargo_settings
+	  *
+	  -->
+	<table name="embargo_settings">
+		<field name="embargo_months" type="I8">
+			<UNIQUE/>
+			<NOTNULL/>
+		</field>
+		<descr>List of possible embargo times (in months)</descr>
+	</table>
+
 </schema>
