@@ -168,6 +168,8 @@ class SettingsHandler extends ManagementHandler {
 		$templateMgr = TemplateManager::getManager($request);
 		$this->setupTemplate($request);
 		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_SUBMISSION); // submission.permissions
+		AppLocale::requireComponents(LOCALE_COMPONENT_APP_SUBMISSION); // submission.embargo
+
 		$templateMgr->display('management/settings/distribution.tpl');
 	}
 }

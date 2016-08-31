@@ -26,6 +26,7 @@ class DistributionSettingsTabHandler extends PKPDistributionSettingsTabHandler {
 			$this->getPageTabs(),
 			array(
 				'permissions' => 'controllers.tab.settings.permissions.form.OMPPermissionSettingsForm',
+				'embargo' => 'controllers.tab.settings.embargo.form.EmbargoSettingsForm',
 			)
 		));
 	}
