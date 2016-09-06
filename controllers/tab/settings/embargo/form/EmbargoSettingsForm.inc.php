@@ -26,6 +26,7 @@ class EmbargoSettingsForm extends ContextSettingsForm {
 				'authorCanSetEmbargo' => 'bool',
 				'editorCanSetEmbargo' => 'bool',
 				'embargoPeriods' => 'object',
+				'allowPermanentEmbargo' => 'bool',
 			),
 			'controllers/tab/settings/embargo/form/embargoSettingsForm.tpl',
 			$wizardMode

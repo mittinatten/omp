@@ -60,6 +60,7 @@
 	<message key="manager.settings.embargoRolesDescription">Allow these roles to set and change embargoes for submissions</message>
 	<message key="manager.settings.embargoPeriods">Embargo periods</message>
 	<message key="manager.settings.embargoPeriodsDescription">Allow embargo periods to be set to the following values</message>
+	<message key="manager.settings.allowPermanentEmbargo">Allow permanent embargoes</message>
 
 	<!-- Statistics management -->
 	<message key="manager.statistics.reports.defaultReport.monographDownloads">Monograph file downloads</message>

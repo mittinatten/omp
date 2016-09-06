@@ -176,7 +176,8 @@ class Monograph extends Submission {
 
 	/**
 	 * Get number of months of embargo from date of publication
-	 * @return int
+	 * Negative value for permanent embargo
+	 * @return int 0 means no embargo, negative means permanent embargo
 	 */
 	function getEmbargoMonths() {
 		return $this->getData('embargoMonths');
@@ -184,10 +185,36 @@ class Monograph extends Submission {
 
 	/**
 	 * Set number of months of embargo from date of publication
+	 * Negative value for permanent embargo
 	 * @param $months int
 	 */
 	function setEmbargoMonths($months) {
 		return $this->setData('embargoMonths', $months);
+	}
+
+	/**
+	 * Has an embargo been set for this submission
+	 * @return boolean
+	 */
+	function hasEmbargo() {
+		return $this->getEmbargoMonths != 0;
+	}
+
+	/**
+	 * Has a permanent embargo been set for this submission
+	 * @return boolean
+	 */
+	function hasPermanentEmbargo() {
+		return $this->getEmbargoMonths() < 0;
+	}
+
+	/**
+	 * Set a permanent embargo for this submission.
+	 * Equivalent to setEmbargoMonths(-1)
+	 * @return boolean
+	 */
+	function setPermanentEmbargo() {
+		return $this->setEmbargoMonths(-1);
 	}
 
 	/**

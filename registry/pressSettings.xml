@@ -175,16 +175,15 @@
 	</setting>
 	<setting type="object" locale="0">
 		<name>embargoPeriods</name>
-		<value>
-			<element key="finitePeriods">
-				<array>
-					<value key="months">0</value>
-					<value key="months">6</value>
-					<value key="months">12</value>
-					<value key="months">24</value>
-				</array>
-			</element>
-			<element key="allowIndefiniteEmbargo">0</element>
-		</value>
+		<array>
+			<element>0</element>
+			<element>6</element>
+			<element>12</element>
+			<element>24</element>
+		</array>
+	</setting>
+	<setting type="bool" locale="0">
+		<name>allowPermanentEmbargo</name>
+		<element>0</element>
 	</setting>
 </press_settings>

@@ -23,9 +23,13 @@
 			{fbvElement type="checkbox" name="authorCanSetEmbargo" label="user.role.author" id="authorCanSetEmbargo" checked=$authorCanSetEmbargo}
 			{fbvElement type="checkbox" name="editorCanSetEmbargo" label="user.role.editor" id="editorCanSetEmbargo" checked=$editorCanSetEmbargo}
 	    {/fbvFormSection}
-		{fbvFormSection id="selectEmbargoPeriods" label="manager.settings.embargoPeriods"}
+		{fbvFormSection id="selectEmbargoPeriods" label="manager.settings.embargoPeriods" list="false"}
 			{translate key="manager.settings.embargoPeriodsDescription"}
-			<p>Add here interface to add 0, 6, 12, 18, 24, forever to the list of allowed embargo times.  (or add possibility to set custom values?).</p>
+			<div id="embargoPeriodsGridContainer">
+				{url|assign:embargoPeriodsGridUrl router=$smarty.const.ROUTE_COMPONENT component="grid.settings.embargoPeriods.EmbargoPeriodsGridHandler" op="fetchGrid" escape=false}
+				{load_url_in_div id="embargoPeriodsGridContainer" url=$embargoPeriodsGridUrl}
+			</div>
+			{fbvElement type="checkbox" name="allowPermanentEmbargo" label="manager.settings.allowPermanentEmbargo" id="allowPermanentEmbargo" checked=$allowPermanentEmbargo}
 		{/fbvFormSection}
 	{/fbvFormArea}
 	

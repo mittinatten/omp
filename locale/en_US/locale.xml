@@ -224,6 +224,7 @@
 	<message key="grid.action.proofApproved">Format has been proofed</message>
 	<message key="grid.action.availableRepresentation">Approve/disapprove this format</message>
 	<message key="grid.action.formatAvailable">Toggle the availability of this format on and off</message>
+	<message key="grid.action.addEmbargoPeriod">Add embargo option</message>
 
 	<!-- Review Attachments -->
 	<message key="grid.reviewAttachments.add">Add Attachment to Review</message>
@@ -281,6 +282,7 @@
 	<message key="catalog.manage.feature.seriesNewRelease">New release in series</message>
 	<message key="catalog.manage.nonOrderable">This monograph is not orderable until it's featured.</message>
 	<message key="catalog.manage.filter.searchByAuthorOrTitle">Search by title or author</message>
+	<message key="catalog.manage.embargoOptions">Options (months)</message>
 
 	<!-- Catalog -->
 	<message key="catalog.noTitles">No titles have been published yet.</message>

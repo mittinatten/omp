@@ -24,7 +24,9 @@
 	<message key="submission.workflowType.editedVolume">Edited Volume: Authors are associated with their own chapter.</message>
 	<message key="submission.workflowType.authoredWork">Monograph: Authors are associated with the book as a whole.</message>
 	<message key="submission.embargo">Embargo</message>
-	<message key="submission.embargoMonths">Months until work is released online (0 recommended)</message>
+	<message key="submission.embargoPeriod">Time until work is released online</message>
+	<message key="submission.embargoMonths">Months</message>
+	<message key="submission.permanentEmbargo">Permanent</message>
 	<message key="submission.monograph">Monograph</message>
 	<message key="submission.published">Production Ready</message>
 	<message key="submission.fairCopy">Fair Copy</message>
@@ -61,6 +63,7 @@
 	<message key="submission.submit.selectSeries">Select series (optional)</message>
 	<message key="submission.submit.seriesPosition">Series Position</message>
 	<message key="submission.submit.seriesPosition.description">Examples: Book 2, Volume 2</message>
+	<message key="submission.submit.selectEmbargo">Select embargo period (optional)</message>
 	<message key="submission.submit.form.localeRequired">Please select a submission language.</message>
 	<message key="submission.submit.privacyStatement">Privacy Statement</message>
 	<message key="submission.submit.contributorRole">Contributor's role</message>

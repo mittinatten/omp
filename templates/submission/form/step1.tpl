@@ -17,10 +17,8 @@
 
 {capture assign="additionalFormContent2"}
 	{include file="submission/form/series.tpl" includeSeriesPosition=false}
-	{if count($embargoOptions) > 1}
-		{fbvFormSection label="submission.embargo"}
-			{fbvElement type="select" from=$embargoOptions id="embargoMonths" label="submission.embargoMonths" size=$fbvStyles.size.SMALL disable=$readOnly}
-		{/fbvFormSection}
+	{if $authorCanSetEmbargo}
+		{include file="submission/form/embargo.tpl}
 	{/if}
 {/capture}
 
