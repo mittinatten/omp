@@ -36,7 +36,7 @@ class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 		$templateMgr->assign('seriesOptions', $seriesOptions);
 
 		// Get Embargo options for this context
-		$templateMgr->assign('authorCanSetEmbargo', $this->context->getSetting('authorCanSetEmbargo'));
+		$templateMgr->assign('enableEmbargo', $this->context->getSetting('enableEmbargo'));
 		$embargoPeriods = $this->context->getSetting('embargoPeriods');
 		sort($embargoPeriods);
 		$periodsOptions = array('0' => __('submission.submit.selectEmbargo'));

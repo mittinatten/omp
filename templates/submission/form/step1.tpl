@@ -17,7 +17,7 @@
 
 {capture assign="additionalFormContent2"}
 	{include file="submission/form/series.tpl" includeSeriesPosition=false}
-	{if $authorCanSetEmbargo}
+	{if $enableEmbargo}
 		{include file="submission/form/embargo.tpl}
 	{/if}
 {/capture}

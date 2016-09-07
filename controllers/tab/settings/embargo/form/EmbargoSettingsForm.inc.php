@@ -23,10 +23,10 @@ class EmbargoSettingsForm extends ContextSettingsForm {
 	function EmbargoSettingsForm($settings = array(), $wizardMode = false) {
 		parent::ContextSettingsForm(
 			array(
-				'authorCanSetEmbargo' => 'bool',
-				'editorCanSetEmbargo' => 'bool',
+				'enableEmbargo' => 'bool',
 				'embargoPeriods' => 'object',
 				'allowPermanentEmbargo' => 'bool',
+				'permanentEmbargoPeriod' => 'int',
 			),
 			'controllers/tab/settings/embargo/form/embargoSettingsForm.tpl',
 			$wizardMode

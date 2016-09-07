@@ -78,14 +78,6 @@ class EmbargoPeriodsGridHandler extends SetupGridHandler {
 	// Overridden methods from GridHandler
 	//
 	/**
-	 * @copydoc GridHandler::initFeatures()
-	 */
-	/*function initFeatures($request, $args) {
-		import('lib.pkp.classes.controllers.grid.feature.OrderGridItemsFeature');
-		return array(new OrderGridItemsFeature());
-		}*/
-
-	/**
 	 * Get the list of "publish data changed" events.
 	 * Used to update the site context switcher upon create/delete.
 	 * @return array

@@ -166,11 +166,7 @@
 		<value>1</value>
 	</setting>
 	<setting type="bool" locale="0">
-		<name>authorCanSetEmbargo</name>
-		<value>0</value>
-	</setting>
-	<setting type="bool" locale="0">
-		<name>editorCanSetEmbargo</name>
+		<name>enableEmbargo</name>
 		<value>0</value>
 	</setting>
 	<setting type="object" locale="0">
@@ -185,5 +181,10 @@
 	<setting type="bool" locale="0">
 		<name>allowPermanentEmbargo</name>
 		<element>0</element>
+	</setting>
+	<setting type="int" locale="0">
+		<name>permanentEmbargoPeriod</name>
+		<!-- 120 years in months -->
+		<element>1440<element>
 	</setting>
 </press_settings>

@@ -18,10 +18,8 @@
 <form class="pkp_form" id="embargoSettingsForm" method="post" action="{url router=$smarty.const.ROUTE_COMPONENT component="tab.settings.DistributionSettingsTabHandler" op="saveFormData" tab="embargo"}">
 	{csrf}
 	{fbvFormArea id="embargoSettings"}
-		{fbvFormSection id="allowRoleToSetEmbargo" label="manager.settings.embargoRoles" list="false"}
-			{translate key="manager.settings.embargoRolesDescription"}
-			{fbvElement type="checkbox" name="authorCanSetEmbargo" label="user.role.author" id="authorCanSetEmbargo" checked=$authorCanSetEmbargo}
-			{fbvElement type="checkbox" name="editorCanSetEmbargo" label="user.role.editor" id="editorCanSetEmbargo" checked=$editorCanSetEmbargo}
+		{fbvFormSection id="enableEmbargoContainer" label="manager.settings.embargoEnable" list="false"}
+			{fbvElement type="checkbox" name="enableEmbargo" label="common.enable" id="enableEmbargo" checked=$enableEmbargo}
 	    {/fbvFormSection}
 		{fbvFormSection id="selectEmbargoPeriods" label="manager.settings.embargoPeriods" list="false"}
 			{translate key="manager.settings.embargoPeriodsDescription"}
@@ -29,7 +27,12 @@
 				{url|assign:embargoPeriodsGridUrl router=$smarty.const.ROUTE_COMPONENT component="grid.settings.embargoPeriods.EmbargoPeriodsGridHandler" op="fetchGrid" escape=false}
 				{load_url_in_div id="embargoPeriodsGridContainer" url=$embargoPeriodsGridUrl}
 			</div>
+		{/fbvFormSection}
+		{fbvFormSection id="permanentEmbargo" label="manager.settings.permanentEmbargo" list="false"}
 			{fbvElement type="checkbox" name="allowPermanentEmbargo" label="manager.settings.allowPermanentEmbargo" id="allowPermanentEmbargo" checked=$allowPermanentEmbargo}
+		{/fbvFormSection}
+		{fbvFormSection id="permanentEmbargoLength" label="manager.settings.permanentEmbargoPeriod" list="false"}
+			{fbvElement type="text" name="permanentEmbargoPeriod" id="permanentEmbargoPeriod" value=$permanentEmbargoPeriod label="manager.settings.permanentEmbargoPeriodDescription"}
 		{/fbvFormSection}
 	{/fbvFormArea}
 	

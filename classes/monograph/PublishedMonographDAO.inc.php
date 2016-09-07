@@ -234,8 +234,9 @@ class PublishedMonographDAO extends MonographDAO {
 			sprintf('INSERT INTO published_submissions
 				(submission_id, date_published, audience, audience_range_qualifier, audience_range_from, audience_range_to, audience_range_exact, cover_image, embargo_until)
 				VALUES
-				(?, %s, ?, ?, ?, ?, ?, ?, ?)',
-				$this->datetimeToDB($publishedMonograph->getDatePublished())),
+				(?, %s, ?, ?, ?, ?, ?, ?, %s)',
+				$this->datetimeToDB($publishedMonograph->getDatePublished()),
+				$this->datetimeToDB($publishedMonograph->getEmbargoUntil())),
 			array(
 				(int) $publishedMonograph->getId(),
 				$publishedMonograph->getAudience(),
@@ -244,7 +245,6 @@ class PublishedMonographDAO extends MonographDAO {
 				$publishedMonograph->getAudienceRangeTo(),
 				$publishedMonograph->getAudienceRangeExact(),
 				serialize($publishedMonograph->getCoverImage() ? $publishedMonograph->getCoverImage() : array()),
-				$publishedMonograph->getEmbargoUntil(),
 			)
 		);
 	}
@@ -274,9 +274,10 @@ class PublishedMonographDAO extends MonographDAO {
 					audience_range_to = ?,
 					audience_range_exact = ?,
 					cover_image = ?,
-					embargo_until = ?
+					embargo_until = %s
 				WHERE	submission_id = ?',
-				$this->datetimeToDB($publishedMonograph->getDatePublished())),
+				$this->datetimeToDB($publishedMonograph->getDatePublished()),
+				$this->datetimeToDB($publishedMonograph->getEmbargoUntil())),
 			array(
 				$publishedMonograph->getAudience(),
 				$publishedMonograph->getAudienceRangeQualifier(),
@@ -284,7 +285,6 @@ class PublishedMonographDAO extends MonographDAO {
 				$publishedMonograph->getAudienceRangeTo(),
 				$publishedMonograph->getAudienceRangeExact(),
 				serialize($publishedMonograph->getCoverImage() ? $publishedMonograph->getCoverImage() : array()),
-				$publishedMonograph->getEmbargoUntil(),
 				(int) $publishedMonograph->getId()
 			)
 		);
@@ -377,7 +377,7 @@ class PublishedMonographDAO extends MonographDAO {
 		$publishedMonograph->setAudienceRangeTo($row['audience_range_to']);
 		$publishedMonograph->setAudienceRangeExact($row['audience_range_exact']);
 		$publishedMonograph->setCoverImage(unserialize($row['cover_image']));
-		$publishedMonograph->setEmbargoUntil($row['embargo_until']);
+		$publishedMonograph->setEmbargoUntil($this->datetimeFromDB($row['embargo_until']));
 
 		HookRegistry::call('PublishedMonographDAO::_fromRow', array(&$publishedMonograph, &$row));
 		return $publishedMonograph;

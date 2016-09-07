@@ -88,7 +88,11 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		$monograph = $this->getMonograph();
 		if ($monograph) {
 			$templateMgr->assign('hasEmbargo', $monograph->hasEmbargo());
-			$templateMgr->assign('embargoMonths', $monograph->getEmbargoMonths());
+			$embargoMonths = $monograph->getEmbargoMonths();
+			if ($embargoMonths = -1) {
+				$embargoMonths = DAORegistry::getDAO('PressSettingsDAO')->getSetting($monograph->getPressId(), 'permanentEmbargoPeriod');
+			}
+			$templateMgr->assign('embargoMonths', $embargoMonths);
 		}
 
 		$publishedMonograph = $this->getPublishedMonograph();
@@ -227,10 +231,9 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		$publishedMonograph->setAudienceRangeExact($this->getData('audienceRangeExact'));
 
 		$embargoMonths = $monograph->getEmbargoMonths();
-		if ($embargoMonths > 0) {
-			$date = new DateTime(Core::getCurrentDate());
-			$date->add(new DateInterval('P' . $embargoMonths . 'M'));
-			$publishedMonograph->setEmbargoUntil(date_format($date, 'Y-m-d'));
+		if ($embargoMonths < 0) { // convert permanent embargo to long time
+			$pressSettingsDAO = DAORegistry::getDAO('PressSettingsDAO');
+			$embargoMonths = $pressSettingsDAO->getSetting($monograph->getPressId(), 'permanentEmbargoPeriod');
 		}
 
 		// If a cover image was uploaded, deal with it.
@@ -322,6 +325,12 @@ class CatalogEntryCatalogMetadataForm extends Form {
 			$monograph->setStatus(STATUS_PUBLISHED);
 			$monographDao->updateObject($monograph);
 
+			// set embargo based on publication date
+			if ($embargoMonths > 0) {
+				$date = new DateTime(Core::getCurrentDate());
+				$date->add(new DateInterval('P' . $embargoMonths . 'M'));
+				$publishedMonograph->setEmbargoUntil($date->format('Y-m-d H:i:s'));
+			}
 			$publishedMonograph->setDatePublished(Core::getCurrentDate());
 			$publishedMonographDao->updateObject($publishedMonograph);
 

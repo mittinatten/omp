@@ -129,17 +129,15 @@ class PublishedMonograph extends Monograph {
 
 	/**
 	 * Get the embargoUntil field for the published monograph.
-	 * @return date DateTime
+	 * @return date string
 	 */
 	function getEmbargoUntil() {
-		$date_string = $this->getData('embargoUntil');
-		if (!is_null($date_string)) return date_create($date_string);
-		return null;
+		return $this->getData('embargoUntil');
 	}
 
 	/**
 	 * Set the embargoUntil field for the published monograph.
-	 * @param $date string (Y-m-d)
+	 * @param $date string
 	 */
 	function setEmbargoUntil($date) {
 		return $this->setData('embargoUntil', $date);
@@ -150,9 +148,9 @@ class PublishedMonograph extends Monograph {
 	 * @return boolean
 	 */
 	function isUnderEmbargo() {
-		$embargo = $this->getEmbargoUntil();
-		if (!is_null($embargo)) {
-			return (Core::getCurrentDate() < $embargo->format('Y-m-d'));
+		$embargoDate = $this->getEmbargoUntil();
+		if (!is_null($embargoDate)) {
+			return (Core::getCurrentDate() < $embargoDate);
 		}
 		return false;
 	}
