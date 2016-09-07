@@ -197,7 +197,7 @@ class Monograph extends Submission {
 	 * @return boolean
 	 */
 	function hasEmbargo() {
-		return $this->getEmbargoMonths != 0;
+		return $this->getEmbargoMonths() != 0;
 	}
 
 	/**

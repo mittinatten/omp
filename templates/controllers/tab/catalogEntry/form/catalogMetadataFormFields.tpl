@@ -46,7 +46,7 @@
 			{fbvElement type="checkbox" id="confirm" checked=$confirm label="submission.catalogEntry.confirm" value="confirm"}
 		{/fbvFormSection}
 	{/if}
-
+	
 	{fbvFormArea id="permissions" title="submission.permissions" class="border"}
 		{fbvFormSection list=true}
 			{fbvElement type="checkbox" id="attachPermissions" label="submission.attachPermissions"}
@@ -58,6 +58,9 @@
 			{fbvElement type="text" id="copyrightHolder" label="submission.copyrightHolder" value=$copyrightHolder multilingual=true size=$fbvStyles.size.MEDIUM inline=true}
 			{fbvElement type="text" id="copyrightYear" label="submission.copyrightYear" value=$copyrightYear size=$fbvStyles.size.SMALL inline=true}
 		{/fbvFormSection}
+		{if $hasEmbargo}
+			<p>{translate key="submission.catalogEntry.monographHasEmbargo" embargoMonths=$embargoMonths}</p>
+		{/if}
 	{/fbvFormArea}
 
 	{fbvFormSection title="monograph.coverImage"}

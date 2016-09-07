@@ -47,7 +47,6 @@ class EmbargoPeriodsForm extends Form {
 		$this->_data['embargoPeriod']  = '';
 		if (isset($id) && isset($embargoPeriods[$id])) {
 			$this->_data['embargoPeriod'] = $embargoPeriods[$id];
-			error_log(">> " . $this->_data['embargoPeriodId']);
 		} 
 		
 		// grid related data

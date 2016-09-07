@@ -85,6 +85,12 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		$templateMgr->assign('audienceRangeQualifiers', $audienceRangeQualifiers);
 		$templateMgr->assign('audienceRanges', $audienceRanges);
 
+		$monograph = $this->getMonograph();
+		if ($monograph) {
+			$templateMgr->assign('hasEmbargo', $monograph->hasEmbargo());
+			$templateMgr->assign('embargoMonths', $monograph->getEmbargoMonths());
+		}
+
 		$publishedMonograph = $this->getPublishedMonograph();
 		if ($publishedMonograph) {
 
