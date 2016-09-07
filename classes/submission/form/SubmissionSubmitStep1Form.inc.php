@@ -38,10 +38,11 @@ class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 		// Get Embargo options for this context
 		$templateMgr->assign('authorCanSetEmbargo', $this->context->getSetting('authorCanSetEmbargo'));
 		$embargoPeriods = $this->context->getSetting('embargoPeriods');
+		sort($embargoPeriods);
 		$periodsOptions = array('0' => __('submission.submit.selectEmbargo'));
 		foreach ($embargoPeriods as $i => $t) {
 			if ($t == 0) continue;
-			$periodsOptions += array("$t" => $t . '  ' . __('submission.embargoMonths'));
+			$periodsOptions += array("$t" => __('submission.embargoMonths', array('months' => $t)));
 		}
 		if ($this->context->getSetting('allowPermanentEmbargo')) {
 			$periodsOptions += array('-1' => __('submission.permanentEmbargo'));

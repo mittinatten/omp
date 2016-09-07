@@ -25,7 +25,7 @@
 	<message key="submission.workflowType.authoredWork">Monograph: Authors are associated with the book as a whole.</message>
 	<message key="submission.embargo">Embargo</message>
 	<message key="submission.embargoPeriod">Time until work is released online</message>
-	<message key="submission.embargoMonths">Months</message>
+	<message key="submission.embargoMonths">{$months} months</message>
 	<message key="submission.permanentEmbargo">Permanent</message>
 	<message key="submission.monograph">Monograph</message>
 	<message key="submission.published">Production Ready</message>
