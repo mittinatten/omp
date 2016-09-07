@@ -194,7 +194,7 @@ class SeriesGridHandler extends SetupGridHandler {
 		return new JSONMessage(true, $seriesForm->fetch($request));
 	}
 
-o	/**
+	/**
 	 * Update a series
 	 * @param $args array
 	 * @param $request PKPRequest
