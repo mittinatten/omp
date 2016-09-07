@@ -446,7 +446,7 @@ class MonographONIX30XmlFilter extends NativeExportFilter {
 		$hasEmbargo = false;
 		$embargoDateNode = null;
 		if (is_a($submission, 'PublishedMonograph') && $submission->isUnderEmbargo()) {
-			$date = $submission->getEmbargoUntil();
+			$date = new DateTime($submission->getEmbargoUntil());
 			$hasEmbargo = true;
 			$embargoDateNode = $doc->createElementNS($deployment->getNamespace(), 'ContentDate');
 			$embargoDateNode->appendChild($this->_buildTextNode($doc, 'ContentDateRole', '14'));
