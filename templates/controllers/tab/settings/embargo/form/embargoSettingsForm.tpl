@@ -36,7 +36,9 @@
 		{/fbvFormSection}
 	{/fbvFormArea}
 	
+	<div class="separator"></div>
+
 	{if !$wizardMode}
-		{fbvFormButtons id="productionStageFormSubmit" submitText="common.save" hideCancel=true}
+		{fbvFormButtons id="embargoPeriodsFormSubmit" submitText="common.save" hideCancel=true}
 	{/if}
 </form>

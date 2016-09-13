@@ -24,7 +24,6 @@ class EmbargoSettingsForm extends ContextSettingsForm {
 		parent::ContextSettingsForm(
 			array(
 				'enableEmbargo' => 'bool',
-				'embargoPeriods' => 'object',
 				'allowPermanentEmbargo' => 'bool',
 				'permanentEmbargoPeriod' => 'int',
 			),

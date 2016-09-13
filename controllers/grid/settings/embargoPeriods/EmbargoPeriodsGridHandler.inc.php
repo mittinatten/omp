@@ -16,7 +16,7 @@ import('lib.pkp.controllers.grid.settings.SetupGridHandler');
 import('controllers.grid.settings.embargoPeriods.EmbargoPeriodsGridRow');
 
 class EmbargoPeriodsGridHandler extends SetupGridHandler {
-    /**
+	/**
 	 * Constructor
 	 */
 	function EmbargoPeriodsGridHandler() {
@@ -51,8 +51,10 @@ class EmbargoPeriodsGridHandler extends SetupGridHandler {
 		// Set grid data
 		$embargoPeriods = $press->getSetting('embargoPeriods');
 		$gridData = array();
-		foreach ($embargoPeriods as $i => $t) {
-			$gridData[$i] = array('period' => $t);
+		if ($embargoPeriods) {
+			foreach ($embargoPeriods as $i => $t) {
+				$gridData[$i] = array('period' => $t);
+			}
 		}
 		$this->setGridDataElements($gridData);
 
@@ -74,7 +76,7 @@ class EmbargoPeriodsGridHandler extends SetupGridHandler {
 		$this->addColumn(new GridColumn('period', 'period'));
 	}
 
-    //
+	//
 	// Overridden methods from GridHandler
 	//
 	/**
