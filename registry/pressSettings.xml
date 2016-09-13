@@ -185,6 +185,6 @@
 	<setting type="int" locale="0">
 		<name>permanentEmbargoPeriod</name>
 		<!-- 120 years in months -->
-		<element>1440<element>
+		<element>1440</element>
 	</setting>
 </press_settings>
