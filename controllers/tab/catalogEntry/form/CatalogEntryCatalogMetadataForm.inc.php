@@ -87,12 +87,13 @@ class CatalogEntryCatalogMetadataForm extends Form {
 
 		$monograph = $this->getMonograph();
 		if ($monograph) {
-			$templateMgr->assign('hasEmbargo', $monograph->hasEmbargo());
-			$embargoMonths = $monograph->getEmbargoMonths();
-			if ($embargoMonths == MONOGRAPH_EMBARGO_PERMANENT) {
-				$embargoMonths = DAORegistry::getDAO('PressSettingsDAO')->getSetting($monograph->getPressId(), 'permanentEmbargoPeriod');
+			$pressSettingsDao = DAORegistry::getDAO('PressSettingsDAO');
+			$enableEmbargo = $pressSettingsDao->getSetting($monograph->getPressId(), 'enableEmbargo');
+			$templateMgr->assign('enableEmbargo', $enableEmbargo);
+			if ($enableEmbargo) {
+				$embargoMonths = $monograph->getEmbargoMonths();
+				$templateMgr->assign('embargoMonths', $embargoMonths);
 			}
-			$templateMgr->assign('embargoMonths', $embargoMonths);
 		}
 
 		$publishedMonograph = $this->getPublishedMonograph();
@@ -125,12 +126,16 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		$copyrightYear = $submission->getCopyrightYear();
 		$licenseURL = $submission->getLicenseURL();
 
+		$pressSettingsDao = DAORegistry::getDAO('PressSettingsDAO');
+
 		$this->_data = array(
 			'copyrightHolder' => $submission->getDefaultCopyrightHolder(null), // Localized
 			'copyrightYear' => $submission->getDefaultCopyrightYear(),
 			'licenseURL' => $submission->getDefaultLicenseURL(),
 			'arePermissionsAttached' => !empty($copyrightHolder) || !empty($copyrightYear) || !empty($licenseURL),
 			'confirm' => ($this->_publishedMonograph && $this->_publishedMonograph->getDatePublished())?true:false,
+			'embargoEnabled' => $pressSettingsDao->getSetting($submission->getPressID(), 'embargoEnabled'),
+			'embargoMonths' => $submission->getEmbargoMonths(),
 		);
 	}
 
@@ -177,7 +182,7 @@ class CatalogEntryCatalogMetadataForm extends Form {
 			'audience', 'audienceRangeQualifier', 'audienceRangeFrom', 'audienceRangeTo', 'audienceRangeExact',
 			'copyrightYear', 'copyrightHolder', 'licenseURL', 'attachPermissions',
 			'temporaryFileId', // Cover image
-			'confirm',
+			'confirm', 'embargoMonths',
 		);
 
 		$this->readUserVars($vars);
@@ -230,10 +235,8 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		$publishedMonograph->setAudienceRangeTo($this->getData('audienceRangeTo'));
 		$publishedMonograph->setAudienceRangeExact($this->getData('audienceRangeExact'));
 
-		$embargoMonths = $monograph->getEmbargoMonths();
-		if ($embargoMonths < 0) { // convert permanent embargo to long time
-			$pressSettingsDAO = DAORegistry::getDAO('PressSettingsDAO');
-			$embargoMonths = $pressSettingsDAO->getSetting($monograph->getPressId(), 'permanentEmbargoPeriod');
+		if ($this->getData('embargoEnabled')) {
+			$monograph->setEmbargoMonths($this->getData('embargoMonths'));
 		}
 
 		// If a cover image was uploaded, deal with it.
@@ -326,6 +329,7 @@ class CatalogEntryCatalogMetadataForm extends Form {
 			$monographDao->updateObject($monograph);
 
 			// set embargo based on publication date
+			$embargoMonths = $this->getData('embargoMonths');
 			if ($embargoMonths > 0) {
 				$date = new DateTime(Core::getCurrentDate());
 				$date->add(new DateInterval('P' . $embargoMonths . 'M'));

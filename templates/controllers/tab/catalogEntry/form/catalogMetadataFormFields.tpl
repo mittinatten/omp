@@ -58,7 +58,7 @@
 			{fbvElement type="text" id="copyrightHolder" label="submission.copyrightHolder" value=$copyrightHolder multilingual=true size=$fbvStyles.size.MEDIUM inline=true}
 			{fbvElement type="text" id="copyrightYear" label="submission.copyrightYear" value=$copyrightYear size=$fbvStyles.size.SMALL inline=true}
 		{/fbvFormSection}
-		{if $hasEmbargo}
+		{if $enableEmbargo}
 			<p>{translate key="submission.catalogEntry.monographHasEmbargo" embargoMonths=$embargoMonths}</p>
 		{/if}
 	{/fbvFormArea}
