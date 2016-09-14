@@ -58,11 +58,13 @@
 	<message key="manager.settings.distributionDescription">All settings specific to the distribution process (notification, indexing, archiving, payment, reading tools).</message>
 	<message key="manager.settings.embargoEnable">Enable embargoes</message>
 	<message key="manager.settings.embargoPeriods">Embargo periods</message>
+	<message key="manager.settings.embargoPeriod">Embargo period</message>
 	<message key="manager.settings.embargoPeriodsDescription">Allow embargo periods to be set to the following values</message>
 	<message key="manager.settings.permanentEmbargo">Permanent embargoes</message>
 	<message key="manager.settings.allowPermanentEmbargo">Allow permanent embargoes</message>
 	<message key="manager.settings.permanentEmbargoPeriod">Permanent embargo time</message>
 	<message key="manager.settings.permanentEmbargoPeriodDescription">Number of months that permanent embargo corresponds to</message>
+	<message key="manager.settings.specifyEmbargoPeriod">Specify new embargo period (in months)</message>
 
 	<!-- Statistics management -->
 	<message key="manager.statistics.reports.defaultReport.monographDownloads">Monograph file downloads</message>
