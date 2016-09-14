@@ -34,7 +34,7 @@ class EmbargoPeriodsGridRow extends GridRow {
 
 		// Is this a new embargo period row or an existing row?
 		$embargoPeriodId = $this->getId();
-		if (!empty($embargoPeriodId) && is_numeric($embargoPeriodId)) {
+		if (is_numeric($embargoPeriodId)) {
 			$router = $request->getRouter();
 
 			import('lib.pkp.classes.linkAction.request.AjaxModal');

@@ -64,10 +64,10 @@ class EmbargoPeriodsForm extends Form {
 		$embargoPeriods = $context->getSetting('embargoPeriods');
 
 		//FIXME: a bit of kludge to get unique embargoPeriod id's
-		if (!is_null($embargoPeriods))  {
+		if (!empty($embargoPeriods)) {
 			$this->embargoPeriodId = ($this->embargoPeriodId != null ? $this->embargoPeriodId : (max(array_keys($embargoPeriods)) + 1));
 		} else {
-			$this->embargoPeriodId = ($this->embargoPeriodId != null ? $this->embargoPeriodId : 1);
+			$this->embargoPeriodId = ($this->embargoPeriodId != null ? $this->embargoPeriodId : 0);
 		}
 
 		$embargoPeriod = $this->getData('embargoPeriod');
