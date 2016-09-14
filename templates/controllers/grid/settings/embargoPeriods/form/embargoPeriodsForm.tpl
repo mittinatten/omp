@@ -18,8 +18,8 @@
 	{csrf}
 	<input type="hidden" name="embargoPeriodId" value="{$embargoPeriodId|escape}">
 	{include file="controllers/notification/inPlaceNotification.tpl" notificationId="seriesFormNotification"}
-	{fbvFormArea id="addEmbargoPeriod" title="Add embargo option"}
-		{fbvElement label="Add embargo period in months" type="text" name="embargoPeriod" id="embargoPeriod" value=$embargoPeriod maxlength="4" size=$fbvStyles.size.MEDIUM}
+	{fbvFormArea id="addEmbargoPeriod" title="manager.settings.embargoPeriod"}
+		{fbvElement label="manager.settings.specifyEmbargoPeriod" type="text" name="embargoPeriod" id="embargoPeriod" value=$embargoPeriod size=$fbvStyles.size.MEDIUM}
 	{/fbvFormArea}
 	{fbvFormButtons submitText="common.add"}
 </form>
