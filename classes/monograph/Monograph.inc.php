@@ -20,6 +20,8 @@
 
 define('WORK_TYPE_EDITED_VOLUME', 1);
 define('WORK_TYPE_AUTHORED_WORK', 2);
+define('MONOGRAPH_EMBARGO_NONE', 0);
+define('MONOGRAPH_EMBARGO_PERMANENT', -1);
 
 import('lib.pkp.classes.submission.Submission');
 import('classes.monograph.Author');
@@ -197,7 +199,7 @@ class Monograph extends Submission {
 	 * @return boolean
 	 */
 	function hasEmbargo() {
-		return $this->getEmbargoMonths() != 0;
+		return $this->getEmbargoMonths() != MONOGRAPH_EMBARGO_NONE;
 	}
 
 	/**
@@ -205,7 +207,7 @@ class Monograph extends Submission {
 	 * @return boolean
 	 */
 	function hasPermanentEmbargo() {
-		return $this->getEmbargoMonths() < 0;
+		return $this->getEmbargoMonths() == MONOGRAPH_EMBARGO_PERMANENT;
 	}
 
 	/**
@@ -214,7 +216,7 @@ class Monograph extends Submission {
 	 * @return boolean
 	 */
 	function setPermanentEmbargo() {
-		return $this->setEmbargoMonths(-1);
+		return $this->setEmbargoMonths(MONOGRAPH_EMBARGO_PERMANENT);
 	}
 
 	/**

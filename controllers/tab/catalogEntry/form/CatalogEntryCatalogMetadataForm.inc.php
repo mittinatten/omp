@@ -89,7 +89,7 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		if ($monograph) {
 			$templateMgr->assign('hasEmbargo', $monograph->hasEmbargo());
 			$embargoMonths = $monograph->getEmbargoMonths();
-			if ($embargoMonths = -1) {
+			if ($embargoMonths == MONOGRAPH_EMBARGO_PERMANENT) {
 				$embargoMonths = DAORegistry::getDAO('PressSettingsDAO')->getSetting($monograph->getPressId(), 'permanentEmbargoPeriod');
 			}
 			$templateMgr->assign('embargoMonths', $embargoMonths);
