@@ -35,20 +35,6 @@ class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 		$seriesOptions = array('0' => __('submission.submit.selectSeries')) + $seriesDao->getTitlesByPressId($this->context->getId(), true);
 		$templateMgr->assign('seriesOptions', $seriesOptions);
 
-		// Get Embargo options for this context
-		$templateMgr->assign('enableEmbargo', $this->context->getSetting('enableEmbargo'));
-		$embargoPeriods = $this->context->getSetting('embargoPeriods');
-		sort($embargoPeriods);
-		$periodsOptions = array(0 => __('submission.submit.selectEmbargo'));
-		foreach ($embargoPeriods as $i => $t) {
-			if ($t == 0) continue;
-			$periodsOptions += array($t => __('submission.embargoMonths', array('months' => $t)));
-		}
-		if ($this->context->getSetting('allowPermanentEmbargo')) {
-			$periodsOptions += array($this->context->getSetting('permanentEmbargoPeriod') => __('submission.permanentEmbargo'));
-		}
-		$templateMgr->assign('embargoPeriods',  $periodsOptions);
-
 		return parent::fetch($request);
 	}
 
@@ -61,7 +47,6 @@ class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 				'seriesId' => $this->submission->getSeriesId(),
 				'seriesPosition' => $this->submission->getSeriesPosition(),
 				'workType' => $this->submission->getWorkType(),
-				'embargoMonths' => $this->submission->getEmbargoMonths(),
 			));
 		} else {
 			parent::initData();
@@ -73,7 +58,7 @@ class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 	 */
 	function readInputData() {
 		$this->readUserVars(array(
-			'workType', 'seriesId', 'seriesPosition', 'embargoMonths',
+			'workType', 'seriesId', 'seriesPosition',
 		));
 		parent::readInputData();
 	}
@@ -105,7 +90,6 @@ class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 		$submission->setWorkType($this->getData('workType'));
 		$submission->setSeriesId($this->getData('seriesId'));
 		$submission->setSeriesPosition($this->getData('seriesPosition'));
-		$submission->setEmbargoMonths($this->getData('embargoMonths'));
 		parent::setSubmissionData($submission);
 	}
 }

@@ -34,6 +34,11 @@ class SubmissionSubmitStep3Form extends PKPSubmissionSubmitStep3Form {
 	function readInputData() {
 		parent::readInputData();
 
+		// Include embargo data
+		if ($this->context->getSetting('authorCanSetEmbargo')) {
+			$this->readUserVars(array('embargoMonths'));
+		}
+
 		// Include category information.
 		$this->readUserVars(array('categories'));
 
@@ -54,6 +59,23 @@ class SubmissionSubmitStep3Form extends PKPSubmissionSubmitStep3Form {
 		$categoryDao = DAORegistry::getDAO('CategoryDAO');
 		$templateMgr->assign('categoriesExist', $categoryDao->getCountByPressId($this->context->getId()) > 0);
 
+		// Get Embargo options for this context
+		$authorCanSetEmbargo = $this->context->getSetting('authorCanSetEmbargo');
+		$templateMgr->assign('authorCanSetEmbargo', $authorCanSetEmbargo);
+		if ($authorCanSetEmbargo) {
+			$embargoPeriods = $this->context->getSetting('embargoPeriods');
+			sort($embargoPeriods);
+			$periodsOptions = array(0 => __('submission.submit.selectEmbargo'));
+			foreach ($embargoPeriods as $i => $t) {
+				if ($t == 0) continue;
+				$periodsOptions += array($t => __('submission.embargoMonths', array('months' => $t)));
+			}
+			if ($this->context->getSetting('allowPermanentEmbargo')) {
+				$periodsOptions += array($this->context->getSetting('permanentEmbargoPeriod') => __('submission.permanentEmbargo'));
+			}
+			$templateMgr->assign('embargoPeriods',  $periodsOptions);
+		}
+
 		return parent::fetch($request);
 	}
 
@@ -64,6 +86,10 @@ class SubmissionSubmitStep3Form extends PKPSubmissionSubmitStep3Form {
 	 * @return int the submission ID
 	 */
 	function execute($args, $request) {
+		if ($this->context->getSetting('authorCanSetEmbargo')) {
+			$this->submission->setEmbargoMonths($this->getData('embargoMonths'));
+		}
+
 		parent::execute($args, $request);
 
 		// handle category assignment.

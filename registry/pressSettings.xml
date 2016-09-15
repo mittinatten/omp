@@ -169,6 +169,10 @@
 		<name>enableEmbargo</name>
 		<value>0</value>
 	</setting>
+	<setting type="bool" locale="0">
+		<name>authorCanSetEmbargo</name>
+		<value>0</value>
+	</setting>
 	<setting type="object" locale="0">
 		<name>embargoPeriods</name>
 		<value>

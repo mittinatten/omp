@@ -20,6 +20,7 @@
 	{fbvFormArea id="embargoSettings"}
 		{fbvFormSection id="enableEmbargoContainer" label="manager.settings.embargoEnable" list="false"}
 			{fbvElement type="checkbox" name="enableEmbargo" label="common.enable" id="enableEmbargo" checked=$enableEmbargo}
+			{fbvElement type="checkbox" name="authorCanSetEmbargo" label="manager.settings.authorCanSetEmbargo" id="authorCanSetEmbargo" checked=$authorCanSetEmbargo}
 	    {/fbvFormSection}
 		{fbvFormSection id="selectEmbargoPeriods" label="manager.settings.embargoPeriods" list="false"}
 			{translate key="manager.settings.embargoPeriodsDescription"}

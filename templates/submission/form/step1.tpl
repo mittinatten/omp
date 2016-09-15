@@ -17,9 +17,6 @@
 
 {capture assign="additionalFormContent2"}
 	{include file="submission/form/series.tpl" includeSeriesPosition=false}
-	{if $enableEmbargo}
-		{include file="submission/form/embargo.tpl}
-	{/if}
 {/capture}
 
 {include file="core:submission/form/step1.tpl"}
