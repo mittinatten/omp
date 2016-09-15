@@ -104,7 +104,9 @@
 	<message key="submission.catalogEntry.confirm">Add this book to the public catalog</message>
 	<message key="submission.catalogEntry.confirm.required">Please confirm that the submission is ready to be placed in the catalog.</message>
 	<message key="submission.catalogEntry.isAvailable">This monograph is ready to be included in the public catalog.</message>
-	<message key="submission.catalogEntry.monographHasEmbargo">This monograph has a {$embargoMonths} month embargo</message>
+	<message key="submission.catalogEntry.authorEmbargo">Author requested a {$embargoMonths} month embargo.</message>
+	<message key="submission.catalogEntry.setEmbargoDate">Set embargo date</message>
+	<message key="submission.catalogEntry.date">Date (Y-m-d)</message>
 
 	<!-- Catalog Entry Tabs -->
 	<message key="submission.catalogEntry.monographMetadata">Monograph</message>

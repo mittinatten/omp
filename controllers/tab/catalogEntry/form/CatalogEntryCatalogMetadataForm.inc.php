@@ -86,6 +86,8 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		$templateMgr->assign('audienceRanges', $audienceRanges);
 
 		$monograph = $this->getMonograph();
+		$publishedMonograph = $this->getPublishedMonograph();
+
 		if ($monograph) {
 			$pressSettingsDao = DAORegistry::getDAO('PressSettingsDAO');
 			$enableEmbargo = $pressSettingsDao->getSetting($monograph->getPressId(), 'enableEmbargo');
@@ -93,10 +95,21 @@ class CatalogEntryCatalogMetadataForm extends Form {
 			if ($enableEmbargo) {
 				$embargoMonths = $monograph->getEmbargoMonths();
 				$templateMgr->assign('embargoMonths', $embargoMonths);
+				if ($embargoMonths > 0) {
+				}
+				// if an embargo date has been set previously, keep it
+				if ($publishedMonograph && $publishedMonograph->isUnderEmbargo()) {
+					$templateMgr->assign('embargoDate', $publishedMonograph->getEmbargoUntil());
+				} else if ($embargoMonths > 0) {
+					$date = new DateTime(Core::getCurrentDate());
+					$date->add(new DateInterval('P' . $embargoMonths . 'M'));
+					$templateMgr->assign('embargoDate', $date->format('Y-m-d'));
+				} else {
+					$templateMgr->assign('embargoDate', '');
+				}
 			}
 		}
 
-		$publishedMonograph = $this->getPublishedMonograph();
 		if ($publishedMonograph) {
 
 			// pre-select the existing values on the form.
@@ -182,7 +195,7 @@ class CatalogEntryCatalogMetadataForm extends Form {
 			'audience', 'audienceRangeQualifier', 'audienceRangeFrom', 'audienceRangeTo', 'audienceRangeExact',
 			'copyrightYear', 'copyrightHolder', 'licenseURL', 'attachPermissions',
 			'temporaryFileId', // Cover image
-			'confirm', 'embargoMonths',
+			'confirm', 'embargoDate',
 		);
 
 		$this->readUserVars($vars);
@@ -329,11 +342,9 @@ class CatalogEntryCatalogMetadataForm extends Form {
 			$monographDao->updateObject($monograph);
 
 			// set embargo based on publication date
-			$embargoMonths = $this->getData('embargoMonths');
-			if ($embargoMonths > 0) {
-				$date = new DateTime(Core::getCurrentDate());
-				$date->add(new DateInterval('P' . $embargoMonths . 'M'));
-				$publishedMonograph->setEmbargoUntil($date->format('Y-m-d H:i:s'));
+			$embargoDate = $this->getData('embargoDate');
+			if ($embargoDate) {
+				$publishedMonograph->setEmbargoUntil($embargoDate);
 			}
 			$publishedMonograph->setDatePublished(Core::getCurrentDate());
 			$publishedMonographDao->updateObject($publishedMonograph);

@@ -59,7 +59,12 @@
 			{fbvElement type="text" id="copyrightYear" label="submission.copyrightYear" value=$copyrightYear size=$fbvStyles.size.SMALL inline=true}
 		{/fbvFormSection}
 		{if $enableEmbargo}
-			<p>{translate key="submission.catalogEntry.monographHasEmbargo" embargoMonths=$embargoMonths}</p>
+			{fbvFormSection label="submission.catalogEntry.setEmbargoDate"}
+				{if $embargoMonths > 0}
+					{translate key="submission.catalogEntry.authorEmbargo" embargoMonths=$embargoMonths}
+				{/if}
+				{fbvElement type="text" id="embargoDate" label="submission.catalogEntry.date" value=$embargoDate|date_format:"%Y-%m-%d" size=$fbvStyles.size.SMALL}
+			{/fbvFormSection}
 		{/if}
 	{/fbvFormArea}
 
