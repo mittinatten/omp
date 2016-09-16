@@ -39,6 +39,10 @@
 		{load_url_in_div id="chapterAuthorContainer" url=$chapterAuthorUrl}
 	{/fbvFormSection}
 
+	{if $enableEmbargo}
+		{include file="submission/form/embargo.tpl"}
+	{/if}
+
 	{fbvFormSection}
 		<!-- Chapter Files -->
 		{url|assign:chapterFilesUrl router=$smarty.const.ROUTE_COMPONENT component="listbuilder.files.ChapterFilesListbuilderHandler" op="fetch" submissionId=$submissionId chapterId=$chapterId escape=false}

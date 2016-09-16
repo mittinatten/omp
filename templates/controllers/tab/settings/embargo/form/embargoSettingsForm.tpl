@@ -19,7 +19,8 @@
 	{csrf}
 	{fbvFormArea id="embargoSettings"}
 		{fbvFormSection id="enableEmbargoContainer" label="manager.settings.embargoEnable" list="false"}
-			{fbvElement type="checkbox" name="enableEmbargo" label="common.enable" id="enableEmbargo" checked=$enableEmbargo}
+			{fbvElement type="checkbox" name="enableMonographEmbargo" label="manager.settings.embargoMonographEnable" id="enableMonographEmbargo" checked=$enableMonographEmbargo}
+			{fbvElement type="checkbox" name="enableChapterEmbargo" label="manager.settings.embargoChapterEnable" id="enableChapterEmbargo" checked=$enableChapterEmbargo}
 			{fbvElement type="checkbox" name="authorCanSetEmbargo" label="manager.settings.authorCanSetEmbargo" id="authorCanSetEmbargo" checked=$authorCanSetEmbargo}
 	    {/fbvFormSection}
 		{fbvFormSection id="selectEmbargoPeriods" label="manager.settings.embargoPeriods" list="false"}

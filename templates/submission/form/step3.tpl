@@ -14,7 +14,7 @@
 {/capture}
 
 {capture assign="additionalFormFields"}
-	{if $authorCanSetEmbargo}
+	{if $enableEmbargo}
 		{include file="submission/form/embargo.tpl"}
 	{/if}
 	{include file="submission/form/categories.tpl"}

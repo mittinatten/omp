@@ -90,6 +90,7 @@ class SubmissionSubmitStep1Form extends PKPSubmissionSubmitStep1Form {
 		$submission->setWorkType($this->getData('workType'));
 		$submission->setSeriesId($this->getData('seriesId'));
 		$submission->setSeriesPosition($this->getData('seriesPosition'));
+		$submission->setEmbargoMonths(0);
 		parent::setSubmissionData($submission);
 	}
 }

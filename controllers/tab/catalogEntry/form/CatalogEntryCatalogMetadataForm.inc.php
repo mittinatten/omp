@@ -90,9 +90,9 @@ class CatalogEntryCatalogMetadataForm extends Form {
 
 		if ($monograph) {
 			$pressSettingsDao = DAORegistry::getDAO('PressSettingsDAO');
-			$enableEmbargo = $pressSettingsDao->getSetting($monograph->getPressId(), 'enableEmbargo');
-			$templateMgr->assign('enableEmbargo', $enableEmbargo);
-			if ($enableEmbargo) {
+			$enableMonographEmbargo = $pressSettingsDao->getSetting($monograph->getPressId(), 'enableMonographEmbargo');
+			$templateMgr->assign('enableMonographEmbargo', $enableMonographEmbargo);
+			if ($enableMonographEmbargo) {
 				$embargoMonths = $monograph->getEmbargoMonths();
 				$templateMgr->assign('embargoMonths', $embargoMonths);
 				if ($embargoMonths > 0) {
@@ -248,10 +248,6 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		$publishedMonograph->setAudienceRangeTo($this->getData('audienceRangeTo'));
 		$publishedMonograph->setAudienceRangeExact($this->getData('audienceRangeExact'));
 
-		if ($this->getData('embargoEnabled')) {
-			$monograph->setEmbargoMonths($this->getData('embargoMonths'));
-		}
-
 		// If a cover image was uploaded, deal with it.
 		if ($temporaryFileId = $this->getData('temporaryFileId')) {
 			// Fetch the temporary file storing the uploaded library file
@@ -342,9 +338,13 @@ class CatalogEntryCatalogMetadataForm extends Form {
 			$monographDao->updateObject($monograph);
 
 			// set embargo based on publication date
-			$embargoDate = $this->getData('embargoDate');
-			if ($embargoDate) {
-				$publishedMonograph->setEmbargoUntil($embargoDate);
+			$pressSettingsDao = DAORegistry::getDAO('PressSettingsDAO');
+			$enableMonographEmbargo = $pressSettingsDao->getSetting($monograph->getPressId(), 'enableMonographEmbargo');
+			if ($enableMonographEmbargo) {
+				$embargoDate = $this->getData('embargoDate');
+				if ($embargoDate) {
+					$publishedMonograph->setEmbargoUntil($embargoDate);
+				}
 			}
 			$publishedMonograph->setDatePublished(Core::getCurrentDate());
 			$publishedMonographDao->updateObject($publishedMonograph);

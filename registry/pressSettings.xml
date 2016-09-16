@@ -166,7 +166,11 @@
 		<value>1</value>
 	</setting>
 	<setting type="bool" locale="0">
-		<name>enableEmbargo</name>
+		<name>enableMonographEmbargo</name>
+		<value>0</value>
+	</setting>
+	<setting type="bool" locale="0">
+		<name>enableChapterEmbargo</name>
 		<value>0</value>
 	</setting>
 	<setting type="bool" locale="0">

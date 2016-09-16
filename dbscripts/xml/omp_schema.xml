@@ -735,6 +735,33 @@
 	</table>
 
 	<!--
+	  *
+	  * TABLE submission_chapter_embargoes
+	  *
+	  -->
+	<table name="submission_chapter_embargoes">
+		<field name="chapter_id" type="I8">
+			<NOTNULL/>
+			<UNIQUE/>
+        </field>
+		<field name="submission_id" type="I8">
+			<NOTNULL/>
+		</field>
+        <field name="embargo_months" type="I8">
+			<DEFAULT value="0"/>
+			<descr>Months of embargo for chapter</descr>
+        </field>
+		<field name="embargo_until" type="T">
+			<descr>Embargo date</descr>
+		</field>
+		<index name="chapter_embargo_chapter_id">
+			<col>chapter_id</col>
+			<UNIQUE/>
+		</index>
+		<descr>Embargoes for chapters</descr>
+	</table>
+
+	<!--
 	 *
 	 * TABLE submission_search_keyword_list
 	 *

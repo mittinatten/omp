@@ -61,8 +61,10 @@ class SubmissionSubmitStep3Form extends PKPSubmissionSubmitStep3Form {
 
 		// Get Embargo options for this context
 		$authorCanSetEmbargo = $this->context->getSetting('authorCanSetEmbargo');
-		$templateMgr->assign('authorCanSetEmbargo', $authorCanSetEmbargo);
-		if ($authorCanSetEmbargo) {
+		$enableMonographEmbargo = $this->context->getSetting('enableMonographEmbargo');
+		$templateMgr->assign('enableEmbargo', $authorCanSetEmbargo && $enableMonographEmbargo);
+		// FIXME: this code is present both here and in ChapterForm, where to put it?
+		if ($authorCanSetEmbargo && $enableMonographEmbargo) {
 			$embargoPeriods = $this->context->getSetting('embargoPeriods');
 			sort($embargoPeriods);
 			$periodsOptions = array(0 => __('submission.submit.selectEmbargo'));

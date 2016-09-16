@@ -57,7 +57,9 @@
 	<message key="manager.settings.publisherCodeType.tip">If you have a publisher name code, please fill it in below.  It will be included in generated metadata.  The field is required if you generate ONIX metadata for your publications.</message>
 	<message key="manager.settings.distributionDescription">All settings specific to the distribution process (notification, indexing, archiving, payment, reading tools).</message>
 	<message key="manager.settings.embargoEnable">Enable embargoes</message>
-	<message key="manager.settings.authorCanSetEmbargo">Author can set embargo</message>
+	<message key="manager.settings.embargoMonographEnable">Enable monograph embargoes</message>
+	<message key="manager.settings.embargoChapterEnable">Enable chapter embargoes</message>
+	<message key="manager.settings.authorCanSetEmbargo">Author can request embargo periods for monographs and/or individual chapters (if embargoes are enabled for either)</message>
 	<message key="manager.settings.embargoPeriods">Embargo periods</message>
 	<message key="manager.settings.embargoPeriod">Embargo period</message>
 	<message key="manager.settings.embargoPeriodsDescription">Allow embargo periods to be set to the following values</message>

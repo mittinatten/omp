@@ -23,7 +23,8 @@ class EmbargoSettingsForm extends ContextSettingsForm {
 	function EmbargoSettingsForm($settings = array(), $wizardMode = false) {
 		parent::ContextSettingsForm(
 			array(
-				'enableEmbargo' => 'bool',
+				'enableMonographEmbargo' => 'bool',
+				'enableChapterEmbargo' => 'bool',
 				'authorCanSetEmbargo' => 'bool',
 				'allowPermanentEmbargo' => 'bool',
 				'permanentEmbargoPeriod' => 'int',
