@@ -98,7 +98,7 @@ class CatalogEntryCatalogMetadataForm extends Form {
 				$templateMgr->assign('embargoMonths', $embargoMonths);
 
 				// if an embargo date has been set previously, keep it
-				if ($publishedMonograph && $publishedMonograph->isUnderEmbargo()) {
+				if ($publishedMonograph && !is_null($publishedMonograph->getEmbargoUntil())) {
 					$templateMgr->assign('embargoDate', $publishedMonograph->getEmbargoUntil());
 				} else if ($embargoMonths > 0) {
 					$date = new DateTime(Core::getCurrentDate());
