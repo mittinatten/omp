@@ -59,11 +59,24 @@
 			{fbvElement type="text" id="copyrightYear" label="submission.copyrightYear" value=$copyrightYear size=$fbvStyles.size.SMALL inline=true}
 		{/fbvFormSection}
 		{if $enableMonographEmbargo}
-			{fbvFormSection label="submission.catalogEntry.setEmbargoDate"}
+			{fbvFormSection label="submission.catalogEntry.monographEmbargoDate"}
+				{fbvElement type="text" id="embargoDate" label="submission.catalogEntry.date" value=$embargoDate|date_format:"%Y-%m-%d" size=$fbvStyles.size.SMALL inline=true}
 				{if $embargoMonths > 0}
-					{translate key="submission.catalogEntry.authorEmbargo" embargoMonths=$embargoMonths}
+					<span class="description">{translate key="submission.catalogEntry.authorEmbargo" embargoMonths=$embargoMonths}</span>
 				{/if}
-				{fbvElement type="text" id="embargoDate" label="submission.catalogEntry.date" value=$embargoDate|date_format:"%Y-%m-%d" size=$fbvStyles.size.SMALL}
+			{/fbvFormSection}
+		{/if}
+		{if $enableChapterEmbargo}
+			{fbvFormSection label="submission.catalogEntry.chapterEmbargoDate"}
+				{foreach from=$chapterEmbargoes key=id item=i}
+					<span>{$i.title}</span>
+					<div>
+					{fbvElement type="text" label="submission.catalogEntry.date" value=$i.embargoUntil|date_format:"%Y-%m-%d" id=$id size=$fbvStyles.size.SMALL inline=true}
+					{if $i.embargoMonths > 0}
+						<span class="description">{translate key="submission.catalogEntry.authorEmbargo" embargoMonths=$i.embargoMonths}</span>
+					{/if}
+					</div>
+				{/foreach}
 			{/fbvFormSection}
 		{/if}
 	{/fbvFormArea}

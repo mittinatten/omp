@@ -16,7 +16,7 @@
  */
 
 import('classes.monograph.Chapter');
-import('classes.monograph.ChapterAuthor');
+import('classes.monograph.ChapterEmbargo');
 
 class ChapterEmbargoDAO extends DAO {
 	/**

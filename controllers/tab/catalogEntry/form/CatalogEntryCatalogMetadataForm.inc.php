@@ -90,13 +90,13 @@ class CatalogEntryCatalogMetadataForm extends Form {
 
 		if ($monograph) {
 			$pressSettingsDao = DAORegistry::getDAO('PressSettingsDAO');
+
 			$enableMonographEmbargo = $pressSettingsDao->getSetting($monograph->getPressId(), 'enableMonographEmbargo');
 			$templateMgr->assign('enableMonographEmbargo', $enableMonographEmbargo);
 			if ($enableMonographEmbargo) {
 				$embargoMonths = $monograph->getEmbargoMonths();
 				$templateMgr->assign('embargoMonths', $embargoMonths);
-				if ($embargoMonths > 0) {
-				}
+
 				// if an embargo date has been set previously, keep it
 				if ($publishedMonograph && $publishedMonograph->isUnderEmbargo()) {
 					$templateMgr->assign('embargoDate', $publishedMonograph->getEmbargoUntil());
@@ -107,6 +107,34 @@ class CatalogEntryCatalogMetadataForm extends Form {
 				} else {
 					$templateMgr->assign('embargoDate', '');
 				}
+			}
+
+			$enableChapterEmbargo = $pressSettingsDao->getSetting($monograph->getPressId(), 'enableChapterEmbargo');
+			$templateMgr->assign('enableChapterEmbargo', $enableChapterEmbargo);
+			if ($enableChapterEmbargo) {
+				$chapterDao = DAORegistry::getDAO('ChapterDAO');
+				$chapterEmbargoDao = DAORegistry::getDAO('ChapterEmbargoDAO');
+				$chapters = $chapterDao->getChapters($monograph->getId());
+				$chapter = $chapters->next();
+				$chapterEmbargoes = array();
+				while($chapter) {
+					$tmpChapter = array('title' => $chapter->getLocalizedFullTitle(), 'embargoMonths' => 0, 'embargoDate' => null);
+					$chapterEmbargo = $chapterEmbargoDao->getObject($chapter->getID());
+					if ($chapterEmbargo) {
+						$embargoMonths = $chapterEmbargo->getEmbargoMonths();
+						$embargoDate = $chapterEmbargo->getEmbargoUntil();
+						$tmpChapter['embargoMonths'] = $embargoMonths;
+						if ($embargoMonths > 0 && is_null($embargoUntil)) {
+							$date = new DateTime(Core::getCurrentDate());
+							$date->add(new DateInterval('P' . $embargoMonths . 'M'));
+							$embargoDate = $date->format('Y-m-d');
+						}
+						$tmpChapter['embargoUntil'] = $embargoDate;
+					}
+					$chapterEmbargoes['chapterEmbargo_' . $chapter->getId()] = $tmpChapter;
+					$chapter = $chapters->next();
+				}
+				$templateMgr->assign('chapterEmbargoes', $chapterEmbargoes);
 			}
 		}
 
