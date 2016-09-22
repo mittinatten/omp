@@ -96,7 +96,7 @@ class ChapterEmbargoDAO extends DAO {
 	 */
 	function insertObject($chapterEmbargo) {
 		$this->update(
-			sprintf('INSERT submission_chapter_embargoes
+			sprintf('INSERT INTO submission_chapter_embargoes
 				(chapter_id, submission_id, embargo_months, embargo_until)
 				VALUES
 				(?, ?, ?, %s)',
