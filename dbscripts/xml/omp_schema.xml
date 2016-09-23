@@ -484,10 +484,6 @@
 			<NOTNULL/>
 			<DEFAULT VALUE="1"/>
 		</field>
-		<field name="embargo_months" type="I8">
-			<NOTNULL/>
-			<DEFAULT VALUE="0"/>
-		</field>
 		<descr>Submissions</descr>
 		<index name="submissions_context_id">
 			<col>context_id</col>
@@ -512,7 +508,6 @@
 			<NOTNULL/>
 		</field>
 		<field name="date_published" type="T"/>
-		<field name="embargo_until" type="T"/>
 		<field name="audience" type="C2" size="255"/>
 		<field name="audience_range_qualifier" type="C2" size="255"/>
 		<field name="audience_range_from" type="C2" size="255"/>
@@ -736,6 +731,30 @@
 
 	<!--
 	  *
+	  * TABLE submission_embargoes
+	  *
+	  -->
+	<table name="submission_embargoes">
+		<field name="submission_id" type="I8">
+			<NOTNULL/>
+			<UNIQUE/>
+		</field>
+        <field name="embargo_months" type="I8">
+			<DEFAULT value="0"/>
+			<descr>Months of embargo</descr>
+        </field>
+		<field name="embargo_date" type="T">
+			<descr>Embargo date</descr>
+		</field>
+		<index name="submission_embargo_submission_id">
+			<col>submission_id</col>
+			<UNIQUE/>
+		</index>
+		<descr>Embargoes for submission</descr>
+	</table>
+
+	<!--
+	  *
 	  * TABLE submission_chapter_embargoes
 	  *
 	  -->
@@ -749,9 +768,9 @@
 		</field>
         <field name="embargo_months" type="I8">
 			<DEFAULT value="0"/>
-			<descr>Months of embargo for chapter</descr>
+			<descr>Months of embargo</descr>
         </field>
-		<field name="embargo_until" type="T">
+		<field name="embargo_date" type="T">
 			<descr>Embargo date</descr>
 		</field>
 		<index name="chapter_embargo_chapter_id">

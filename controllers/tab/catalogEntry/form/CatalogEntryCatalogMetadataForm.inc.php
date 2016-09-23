@@ -90,23 +90,29 @@ class CatalogEntryCatalogMetadataForm extends Form {
 
 		if ($monograph) {
 			$pressSettingsDao = DAORegistry::getDAO('PressSettingsDAO');
+			$submissionEmbargoDao = DAORegistry::getDAO('SubmissionEmbargoDAO');
 
 			$enableMonographEmbargo = $pressSettingsDao->getSetting($monograph->getPressId(), 'enableMonographEmbargo');
 			$templateMgr->assign('enableMonographEmbargo', $enableMonographEmbargo);
 			if ($enableMonographEmbargo) {
-				$embargoMonths = $monograph->getEmbargoMonths();
+				$embargo = $submissionEmbargoDao->getObject($monograph->getId());
+				$embargoMonths = 0;
+				if ($embargo) {
+					$embargoMonths = $embargo->getEmbargoMonths();
+
+					// if an embargo date has been set previously, keep it
+					if (!is_null($embargo->getEmbargoDate())) {
+						$templateMgr->assign('embargoDate', $embargo->getEmbargoDate());
+					} else if ($embargoMonths > 0) {
+						$date = new DateTime(Core::getCurrentDate());
+						$date->add(new DateInterval('P' . $embargoMonths . 'M'));
+						$templateMgr->assign('embargoDate', $date->format('Y-m-d'));
+					} else {
+						$templateMgr->assign('embargoDate', '');
+					}
+				}
 				$templateMgr->assign('embargoMonths', $embargoMonths);
 
-				// if an embargo date has been set previously, keep it
-				if ($publishedMonograph && !is_null($publishedMonograph->getEmbargoUntil())) {
-					$templateMgr->assign('embargoDate', $publishedMonograph->getEmbargoUntil());
-				} else if ($embargoMonths > 0) {
-					$date = new DateTime(Core::getCurrentDate());
-					$date->add(new DateInterval('P' . $embargoMonths . 'M'));
-					$templateMgr->assign('embargoDate', $date->format('Y-m-d'));
-				} else {
-					$templateMgr->assign('embargoDate', '');
-				}
 			}
 
 			$enableChapterEmbargo = $pressSettingsDao->getSetting($monograph->getPressId(), 'enableChapterEmbargo');
@@ -122,14 +128,14 @@ class CatalogEntryCatalogMetadataForm extends Form {
 					$chapterEmbargo = $chapterEmbargoDao->getObject($chapter->getID());
 					if ($chapterEmbargo) {
 						$embargoMonths = $chapterEmbargo->getEmbargoMonths();
-						$embargoDate = $chapterEmbargo->getEmbargoUntil();
+						$embargoDate = $chapterEmbargo->getEmbargoDate();
 						$tmpChapter['embargoMonths'] = $embargoMonths;
-						if ($embargoMonths > 0 && is_null($embargoUntil)) {
+						if ($embargoMonths > 0 && is_null($embargoDate)) {
 							$date = new DateTime(Core::getCurrentDate());
 							$date->add(new DateInterval('P' . $embargoMonths . 'M'));
 							$embargoDate = $date->format('Y-m-d');
 						}
-						$tmpChapter['embargoUntil'] = $embargoDate;
+						$tmpChapter['embargoDate'] = $embargoDate;
 					}
 					$chapterEmbargoes['chapterEmbargo_' . $chapter->getId()] = $tmpChapter;
 					$chapter = $chapters->next();
@@ -175,9 +181,13 @@ class CatalogEntryCatalogMetadataForm extends Form {
 			'licenseURL' => $submission->getDefaultLicenseURL(),
 			'arePermissionsAttached' => !empty($copyrightHolder) || !empty($copyrightYear) || !empty($licenseURL),
 			'confirm' => ($this->_publishedMonograph && $this->_publishedMonograph->getDatePublished())?true:false,
-			'embargoEnabled' => $pressSettingsDao->getSetting($submission->getPressID(), 'embargoEnabled'),
-			'embargoMonths' => $submission->getEmbargoMonths(),
 		);
+
+		$embargoDao = DAORegistry::getDAO('SubmissionEmbargoDAO');
+		$embargo = $embargoDao->getObject($submission->getId());
+		if (!is_null($embargo)) {
+			$this->_data['embargoMonths'] = $embargo->getEmbargoMonths();
+		}
 	}
 
 
@@ -360,20 +370,34 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		$publicationFormatFactory = $publicationFormatDao->getBySubmissionId($monograph->getId());
 		$publicationFormats = $publicationFormatFactory->toAssociativeArray();
 		$notificationMgr = new NotificationManager();
+
+		// set embargo
+		$pressSettingsDao = DAORegistry::getDAO('PressSettingsDAO');
+		$enableMonographEmbargo = $pressSettingsDao->getSetting($monograph->getPressId(), 'enableMonographEmbargo');
+		if ($enableMonographEmbargo) {
+			$embargoDao = DAORegistry::getDAO('SubmissionEmbargoDAO');
+			$embargo = $embargoDao->getObject($monograph->getId());
+			$isExistingEmbargo = !is_null($embargo);
+			if (!$isExistingEmbargo) {
+				$embargo = new SubmissionEmbargo();
+				$embargo->setSubmissionId($monograph->getId());
+			}
+			$embargoDate = $this->getData('embargoDate');
+			if ($embargoDate) {
+				$embargo->setEmbargoDate($embargoDate);
+				if ($isExistingEmbargo) {
+					$embargoDao->updateObject($embargo);
+				} else {
+					$embargoDao->insertObject($embargo);
+				}
+			}
+		}
+
 		if ($this->getData('confirm')) {
 			// Update the monograph status.
 			$monograph->setStatus(STATUS_PUBLISHED);
 			$monographDao->updateObject($monograph);
 
-			// set embargo based on publication date
-			$pressSettingsDao = DAORegistry::getDAO('PressSettingsDAO');
-			$enableMonographEmbargo = $pressSettingsDao->getSetting($monograph->getPressId(), 'enableMonographEmbargo');
-			if ($enableMonographEmbargo) {
-				$embargoDate = $this->getData('embargoDate');
-				if ($embargoDate) {
-					$publishedMonograph->setEmbargoUntil($embargoDate);
-				}
-			}
 			$publishedMonograph->setDatePublished(Core::getCurrentDate());
 			$publishedMonographDao->updateObject($publishedMonograph);
 

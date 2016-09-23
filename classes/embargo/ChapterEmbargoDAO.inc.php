@@ -1,14 +1,14 @@
 <?php
 
 /**
- * @file classes/monograph/ChapterEmbargoDAO.inc.php
+ * @file classes/embargo/ChapterEmbargoDAO.inc.php
  *
  * Copyright (c) 2014-2016 Simon Fraser University Library
  * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ChapterEmbargoDAO
- * @ingroup monograph
+ * @ingroup embargo
  * @see ChapterEmbargo
  *
  * @brief Operations for retrieving and modifying ChapterEmbargo objects.
@@ -16,7 +16,7 @@
  */
 
 import('classes.monograph.Chapter');
-import('classes.monograph.ChapterEmbargo');
+import('classes.embargo.ChapterEmbargo');
 
 class ChapterEmbargoDAO extends DAO {
 	/**
@@ -57,20 +57,20 @@ class ChapterEmbargoDAO extends DAO {
 		$params = array((int) $chapterId);
 
 		$result = $this->retrieve(
-			'SELECT embargo_until
+			'SELECT embargo_date
 			FROM	submission_chapter_embargoes
 			WHERE 	chapter_id = ?',
 			$params
 		);
 
 		if (!$result->EOF) {
-			return $result->fields['embargo_until'];
+			return $result->fields['embargo_date'];
 		}
 		return null;
 	}
 
 	function chapterHasEmbargo($chapterId) {
-		return (!is_null(getEmbargoDate($chapterid)) or getEmbargoUntil($chapterId) > 0);
+		return (!is_null(getEmbargoDate($chapterid)) or getEmbargoMonths($chapterId) > 0);
 	}
 
 	/*
@@ -97,13 +97,13 @@ class ChapterEmbargoDAO extends DAO {
 	function insertObject($chapterEmbargo) {
 		$this->update(
 			sprintf('INSERT INTO submission_chapter_embargoes
-				(chapter_id, submission_id, embargo_months, embargo_until)
+				(chapter_id, submission_id, embargo_months, embargo_date)
 				VALUES
 				(?, ?, ?, %s)',
-				$this->datetimetoDB($chapterEmbargo->getEmbargoUntil())),
+				$this->datetimetoDB($chapterEmbargo->getEmbargoDate())),
 			array(
 				(int) $chapterEmbargo->getChapterId(),
-				(int) $chapterEmbargo->getMonographId(),
+				(int) $chapterEmbargo->getSubmissionId(),
 				(int) $chapterEmbargo->getEmbargoMonths(),
 			)
 		);
@@ -117,13 +117,13 @@ class ChapterEmbargoDAO extends DAO {
 		$this->update(
 			sprintf('UPDATE	submission_chapter_embargoes
 				SET embargo_months = ?,
-					embargo_until = %s
+					embargo_date = %s
 				WHERE	chapter_id = ? AND submission_id = ?',
-				$this->datetimetoDB($chapterEmbargo->getEmbargoUntil())),
+				$this->datetimetoDB($chapterEmbargo->getEmbargoDate())),
 			array(
 				(int) $chapterEmbargo->getEmbargoMonths(),
 				(int) $chapterEmbargo->getChapterId(),
-				(int) $chapterEmbargo->getMonographId(),
+				(int) $chapterEmbargo->getSubmissionId(),
 			)
 		);
 	}
@@ -145,9 +145,9 @@ class ChapterEmbargoDAO extends DAO {
 		$chapterEmbargo = new ChapterEmbargo();
 		
 		$chapterEmbargo->setChapterId($row['chapter_id']);
-		$chapterEmbargo->setMonographId($row['submission_id']);
+		$chapterEmbargo->setSubmissionId($row['submission_id']);
 		$chapterEmbargo->setEmbargoMonths($row['embargo_months']);
-		$chapterEmbargo->setEmbargoUntil($row['embargo_until']);
+		$chapterEmbargo->setEmbargoDate($row['embargo_date']);
 		
 		return $chapterEmbargo;
 	}

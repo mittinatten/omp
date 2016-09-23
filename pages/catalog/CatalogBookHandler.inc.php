@@ -64,10 +64,7 @@ class CatalogBookHandler extends Handler {
 		// Provide embargo info to template
 		if ($publishedMonograph->isUnderEmbargo()) {
 			$templateMgr->assign('underEmbargo', 1);
-			$date = $publishedMonograph->getEmbargoUntil();
-			if ($date) {
-				$templateMgr->assign('embargoUntil', $date);
-			}
+			$templateMgr->assign('embargoDate', $publishedMonograph->getEmbargoDate());
 		} else {
 			$templateMgr->assign('underEmbargo', 0);
 		}

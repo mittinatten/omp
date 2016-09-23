@@ -365,7 +365,7 @@
 
 			{* Publication formats *}
 			{if $underEmbargo}
-				<div class="item">Under embargo until {$embargoUntil|date_format:"%Y-%m-%d"}</div>
+				<div class="item">Under embargo until {$embargoDate|date_format:"%Y-%m-%d"}</div>
 			{else}
 				{if count($publicationFormats)}
 					{foreach from=$publicationFormats item="publicationFormat"}

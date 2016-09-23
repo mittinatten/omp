@@ -128,34 +128,6 @@ class PublishedMonograph extends Monograph {
 	}
 
 	/**
-	 * Get the embargoUntil field for the published monograph.
-	 * @return date string
-	 */
-	function getEmbargoUntil() {
-		return $this->getData('embargoUntil');
-	}
-
-	/**
-	 * Set the embargoUntil field for the published monograph.
-	 * @param $date string
-	 */
-	function setEmbargoUntil($date) {
-		return $this->setData('embargoUntil', $date);
-	}
-
-	/**
-	 * Is the monograph under embargo?
-	 * @return boolean
-	 */
-	function isUnderEmbargo() {
-		$embargoDate = $this->getEmbargoUntil();
-		if (!is_null($embargoDate)) {
-			return (Core::getCurrentDate() < $embargoDate);
-		}
-		return false;
-	}
-
-	/**
 	 * Retrieves the assigned publication formats for this submission
 	 * @param $onlyApproved boolean whether to fetch only those that are approved for publication.
 	 * @return array PublicationFormat
@@ -224,6 +196,16 @@ class PublishedMonograph extends Monograph {
 			return true;
 		}
 		return false;
+	}
+
+	function isUnderEmbargo() {
+		$embargoDao = DAORegistry::getDAO('SubmissionEmbargoDAO');
+		return $embargoDao->submissionIsUnderEmbargo($this->getId());
+	}
+
+	function getEmbargoDate() {
+		$embargoDao = DAORegistry::getDAO('SubmissionEmbargoDAO');
+		return $embargoDao->getEmbargoDate($this->getId());
 	}
 
 	/**

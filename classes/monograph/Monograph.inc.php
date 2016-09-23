@@ -175,32 +175,6 @@ class Monograph extends Submission {
 	}
 
 	/**
-	 * Get number of months of embargo from date of publication
-	 * Negative value for permanent embargo
-	 * @return int 0 means no embargo, negative means permanent embargo
-	 */
-	function getEmbargoMonths() {
-		return $this->getData('embargoMonths');
-	}
-
-	/**
-	 * Set number of months of embargo from date of publication
-	 * Negative value for permanent embargo
-	 * @param $months int
-	 */
-	function setEmbargoMonths($months) {
-		return $this->setData('embargoMonths', $months);
-	}
-
-	/**
-	 * Has an embargo been set for this submission
-	 * @return boolean
-	 */
-	function hasEmbargo() {
-		return $this->getEmbargoMonths() > 0;
-	}
-
-	/**
 	 * Get whether or not this monograph has metadata approved to
 	 * be available in catalog.
 	 * @return boolean;

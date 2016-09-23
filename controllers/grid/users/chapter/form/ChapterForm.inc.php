@@ -15,7 +15,7 @@
  */
 
 import('lib.pkp.classes.form.Form');
-import('classes.monograph.ChapterEmbargo');
+import('classes.embargo.ChapterEmbargo');
 
 class ChapterForm extends Form {
 	/** The monograph associated with the submission chapter being edited **/
@@ -191,7 +191,7 @@ class ChapterForm extends Form {
 		if (!$chapterEmbargo) {
 			$chapterEmbargo = new ChapterEmbargo();
 			$chapterEmbargo->setChapterId($chapter->getId());
-			$chapterEmbargo->setMonographId($chapter->getMonographId());
+			$chapterEmbargo->setSubmissionId($chapter->getMonographId());
 			$chapterEmbargo->setEmbargoMonths($this->getData('embargoMonths'));
 			$chapterEmbargoDao->insertObject($chapterEmbargo);
 		} else {
