@@ -62,7 +62,7 @@ class SubmissionEmbargo extends DataObject {
 
 	/*
 	 * Get embargo date.
-	 * @return date (string)
+	 * @return string (date)
 	 */
 	function getEmbargoDate() {
 		return $this->getData('embargoDate');
@@ -74,6 +74,20 @@ class SubmissionEmbargo extends DataObject {
 	 */
 	function setEmbargoDate($date) {
 		return $this->setData('embargoDate', $date);
+	}
+
+	/*
+	 * Get embargo date as current-date plus embargo months
+	 * @return string (date, Y-m-d). Null if no embargo months set.
+	 */
+	function calculateEmbargoDate() {
+		$embargoMonths = $this->getEmbargoMonths();
+		if ($embargoMonths > 0) {
+			$date = new DateTime(Core::getCurrentDate());
+			$date->add(new DateInterval('P' . $embargoMonths . 'M'));
+			return $date->format('Y-m-d');
+		}
+		return null;
 	}
 }
 
