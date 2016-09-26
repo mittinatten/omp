@@ -108,6 +108,8 @@
 	<message key="submission.catalogEntry.monographEmbargoDate">Monograph embargo date</message>
 	<message key="submission.catalogEntry.chapterEmbargoDate">Chapter embargo date</message>
 	<message key="submission.catalogEntry.date">Date (Y-m-d)</message>
+	<message key="submission.catalogEntry.monographEmbargoDateInvalid">Monograph embargo date invalid</message>
+	<message key="submission.catalogEntry.chapterEmbargoDateInvalid">Chapter embargo date invalid</message>
 
 	<!-- Catalog Entry Tabs -->
 	<message key="submission.catalogEntry.monographMetadata">Monograph</message>

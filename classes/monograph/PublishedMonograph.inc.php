@@ -198,11 +198,19 @@ class PublishedMonograph extends Monograph {
 		return false;
 	}
 
+	/*
+	 * Is the monograph under embargo
+	 * @return bool
+	 */
 	function isUnderEmbargo() {
 		$embargoDao = DAORegistry::getDAO('SubmissionEmbargoDAO');
 		return $embargoDao->submissionIsUnderEmbargo($this->getId());
 	}
 
+	/*
+	 * Get the embargo date for the monograph
+	 * @return string (date)
+	 */
 	function getEmbargoDate() {
 		$embargoDao = DAORegistry::getDAO('SubmissionEmbargoDAO');
 		return $embargoDao->getEmbargoDate($this->getId());

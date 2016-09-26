@@ -67,10 +67,18 @@ class SubmissionEmbargoDAO extends DAO {
 		return null;
 	}
 
+	/*
+	 * Has an embargo been set for this submission (can have passed already)
+	 * @return bool
+	 */
 	function submissionHasEmbargo($submissionId) {
 		return (!is_null(getEmbargoDate($submissionid)) or getEmbargoMonths($submissionId) > 0);
 	}
 
+	/*
+	 * Is the submission under embargo
+	 * @return bool
+	 */
 	function submissionIsUnderEmbargo($submissionId) {
 		$embargoDate = $this->getEmbargoDate($submissionId);
 		if (!is_null($embargoDate)) {

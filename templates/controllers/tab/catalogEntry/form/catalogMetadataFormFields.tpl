@@ -69,13 +69,14 @@
 		{if $enableChapterEmbargo}
 			{fbvFormSection label="submission.catalogEntry.chapterEmbargoDate"}
 				{foreach from=$chapterEmbargoes key=id item=i}
-					<span>{$i.title}</span>
-					<div>
-					{fbvElement type="text" label="submission.catalogEntry.date" value=$i.embargoUntil|date_format:"%Y-%m-%d" id=$id size=$fbvStyles.size.SMALL inline=true}
-					{if $i.embargoMonths > 0}
+					<div style="clear: both"> <!-- FIXME: use appropriate CSS class -->
+						<div>{$i.title}</div>
+						{fbvElement type="text" label="submission.catalogEntry.date" value=$i.embargoDate|date_format:"%Y-%m-%d" id=$id size=$fbvStyles.size.SMALL inline=true}
+						{if $i.embargoMonths > 0}
 						<span class="description">{translate key="submission.catalogEntry.authorEmbargo" embargoMonths=$i.embargoMonths}</span>
-					{/if}
+						{/if}
 					</div>
+					<br /><br />
 				{/foreach}
 			{/fbvFormSection}
 		{/if}

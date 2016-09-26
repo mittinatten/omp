@@ -150,30 +150,34 @@
 									</div>
 								{/if}
 
+								{if $chapter->isUnderEmbargo()}
+									<div>Embargo date {$chapter->getEmbargoDate()|date_format:"%Y-%m-%d"}.</div>
+								{else}
+									{* Display any files that are assigned to this chapter *}
+									{if not $monographUnderEmbargo}
+										{pluck_files assign="chapterFiles" files=$availableFiles by="chapter" value=$chapterId}
 
-								{* Display any files that are assigned to this chapter *}
-								{if not $underEmbargo}
-									{pluck_files assign="chapterFiles" files=$availableFiles by="chapter" value=$chapterId}
-									{if $chapterFiles|@count}
-										<div class="files">
+										{if $chapterFiles|@count}
+											<div class="files">
 
-											{* Display chapter files sorted by publication format so that they are ordered
-											   consistently across all chapters. *}
-											{foreach from=$publicationFormats item=format}
-												{pluck_files assign="pubFormatFiles" files=$chapterFiles by="publicationFormat" value=$format->getId()}
+												{* Display chapter files sorted by publication format so that they are ordered
+												   consistently across all chapters. *}
+												{foreach from=$publicationFormats item=format}
+													{pluck_files assign="pubFormatFiles" files=$chapterFiles by="publicationFormat" value=$format->getId()}
 
-												{foreach from=$pubFormatFiles item=file}
+													{foreach from=$pubFormatFiles item=file}
 
-													{* Use the publication format name in the download link unless a pub format has multiple files *}
-													{assign var=useFileName value=false}
-													{if $pubFormatFiles|@count > 1}
-														{assign var=useFileName value=true}
-													{/if}
+														{* Use the publication format name in the download link unless a pub format has multiple files *}
+														{assign var=useFileName value=false}
+														{if $pubFormatFiles|@count > 1}
+															{assign var=useFileName value=true}
+														{/if}
 
-													{include file="frontend/components/downloadLink.tpl" downloadFile=$file monograph=$monograph publicationFormat=$format currency=$currency useFilename=$useFileName}
+														{include file="frontend/components/downloadLink.tpl" downloadFile=$file monograph=$monograph publicationFormat=$format currency=$currency useFilename=$useFileName}
+													{/foreach}
 												{/foreach}
-											{/foreach}
-										</div>
+											</div>
+										{/if}
 									{/if}
 								{/if}
 							</li>
@@ -236,7 +240,7 @@
 			{/if}
 
 			{* Any non-chapter files and remote resources *}
-			{if not $underEmbargo}
+			{if not $monographUnderEmbargo}
 				{pluck_files assign=nonChapterFiles files=$availableFiles by="chapter" value=0}
 				{if $nonChapterFiles|@count}
 					<div class="item files">
@@ -364,8 +368,8 @@
 			{/if}
 
 			{* Publication formats *}
-			{if $underEmbargo}
-				<div class="item">Under embargo until {$embargoDate|date_format:"%Y-%m-%d"}</div>
+			{if $monographUnderEmbargo}
+				<div class="item">Under embargo until {$monographEmbargoDate|date_format:"%Y-%m-%d"}</div>
 			{else}
 				{if count($publicationFormats)}
 					{foreach from=$publicationFormats item="publicationFormat"}

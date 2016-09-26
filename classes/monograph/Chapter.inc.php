@@ -131,6 +131,24 @@ class Chapter extends DataObject {
 		return $chapterAuthorDao->getAuthors($this->getMonographId(), $this->getId());
 	}
 
+	/*
+	 * Is the chapter under embargo
+	 * @return bool
+	 */
+	function isUnderEmbargo() {
+		$chapterEmbargoDao = DAORegistry::getDAO('ChapterEmbargoDAO');
+		return $chapterEmbargoDao->chapterIsUnderEmbargo($this->getId());
+	}
+
+	/*
+	 * Get the embargo date for the chapter
+	 * @return string (date)
+	 */
+	function getEmbargoDate() {
+		$chapterEmbargoDao = DAORegistry::getDAO('ChapterEmbargoDAO');
+		return $chapterEmbargoDao->getEmbargoDate($this->getId());
+	}
+
 	/**
 	 * Get the author names for this chapter and return them as a string.
 	 * @return string

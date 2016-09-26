@@ -63,10 +63,10 @@ class CatalogBookHandler extends Handler {
 
 		// Provide embargo info to template
 		if ($publishedMonograph->isUnderEmbargo()) {
-			$templateMgr->assign('underEmbargo', 1);
-			$templateMgr->assign('embargoDate', $publishedMonograph->getEmbargoDate());
+			$templateMgr->assign('monographUnderEmbargo', 1);
+			$templateMgr->assign('monographEmbargoDate', $publishedMonograph->getEmbargoDate());
 		} else {
-			$templateMgr->assign('underEmbargo', 0);
+			$templateMgr->assign('monographUnderEmbargo', 0);
 		}
 
 		// Provide the publication formats to the template
@@ -171,6 +171,7 @@ class CatalogBookHandler extends Handler {
 		$press = $request->getPress();
 
 		// secure backdoor access, i.e. doesn't need to be pretty
+		// FIXME: how is this done for chapter files?
 		if ($publishedMonograph->isUnderEmbargo()) {
 			fatalError('This object is under embargo until ' . $publishedMonograph->getEmbargoUntil()->format('Y-m-d'));
 		}

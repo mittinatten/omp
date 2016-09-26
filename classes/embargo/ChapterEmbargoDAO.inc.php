@@ -69,10 +69,25 @@ class ChapterEmbargoDAO extends DAO {
 		return null;
 	}
 
+	/*
+	 * Has an embargo been set for this chapter (can have passed already)
+	 * @return bool
+	 */
 	function chapterHasEmbargo($chapterId) {
 		return (!is_null(getEmbargoDate($chapterid)) or getEmbargoMonths($chapterId) > 0);
 	}
 
+	/*
+	 * Is the chapter under embargo
+	 * @return bool
+	 */
+	function chapterIsUnderEmbargo($chapterId) {
+		$chapterEmbargoDate = $this->getEmbargoDate($chapterId);
+		if (!is_null($chapterEmbargoDate)) {
+			return (Core::getCurrentDate() < $chapterEmbargoDate);
+		}
+		return false;
+	}
 	/*
 	 * Gets a ChapterEmbargo object for a given chapterId
 	 * @param $chapterId int
