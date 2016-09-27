@@ -15,7 +15,7 @@
  */
 
 import('lib.pkp.classes.form.Form');
-import('classes.embargo.ChapterEmbargo');
+import('classes.embargo.Embargo');
 
 class ChapterForm extends Form {
 	/** The monograph associated with the submission chapter being edited **/
@@ -189,9 +189,8 @@ class ChapterForm extends Form {
 		$chapterEmbargoDao = DAORegistry::getDAO('ChapterEmbargoDAO');
 		$chapterEmbargo = $chapterEmbargoDao->getObject($chapter->getId());
 		if (!$chapterEmbargo) {
-			$chapterEmbargo = new ChapterEmbargo();
-			$chapterEmbargo->setChapterId($chapter->getId());
-			$chapterEmbargo->setSubmissionId($chapter->getMonographId());
+			$chapterEmbargo = new Embargo();
+			$chapterEmbargo->setAssociatedId($chapter->getId());
 			$chapterEmbargo->setEmbargoMonths($this->getData('embargoMonths'));
 			$chapterEmbargoDao->insertObject($chapterEmbargo);
 		} else {

@@ -93,8 +93,8 @@ class SubmissionSubmitStep3Form extends PKPSubmissionSubmitStep3Form {
 			$embargo = $embargoDAO->getObject($this->submission->getId());
 			$existingEmbargo = !is_null($embargo);
 			if (!$existingEmbargo) {
-				$embargo = new SubmissionEmbargo();
-				$embargo->setSubmissionId($this->submission->getId());
+				$embargo = new Embargo();
+				$embargo->setAssociatedId($this->submission->getId());
 			}
 			$embargo->setEmbargoMonths($this->getData('embargoMonths'));
 			if ($existingEmbargo) {

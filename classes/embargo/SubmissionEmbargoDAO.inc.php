@@ -16,7 +16,7 @@
  */
 
 import('classes.monograph.Monograph');
-import('classes.embargo.SubmissionEmbargo');
+import('classes.embargo.Embargo');
 
 class SubmissionEmbargoDAO extends DAO {
 	/**
@@ -116,7 +116,7 @@ class SubmissionEmbargoDAO extends DAO {
 				(?, ?, %s)',
 				$this->datetimetoDB($submissionEmbargo->getEmbargoDate())),
 			array(
-				(int) $submissionEmbargo->getSubmissionId(),
+				(int) $submissionEmbargo->getAssociatedId(),
 				(int) $submissionEmbargo->getEmbargoMonths(),
 			)
 		);
@@ -135,7 +135,7 @@ class SubmissionEmbargoDAO extends DAO {
 				$this->datetimetoDB($submissionEmbargo->getEmbargoDate())),
 			array(
 				(int) $submissionEmbargo->getEmbargoMonths(),
-				(int) $submissionEmbargo->getSubmissionId(),
+				(int) $submissionEmbargo->getAssociatedId(),
 			)
 		);
 	}
@@ -145,7 +145,7 @@ class SubmissionEmbargoDAO extends DAO {
 	 * @return SubmissionEmbargo
 	 */
 	function newDataObject() {
-		return new SubmissionEmbargo();
+		return new Embargo();
 	}
 
 	/**
@@ -154,9 +154,9 @@ class SubmissionEmbargoDAO extends DAO {
 	 * @return SubmissionEmbargo
 	 */
 	function _fromRow($row) {
-		$submissionEmbargo = new SubmissionEmbargo();
+		$submissionEmbargo = new Embargo();
 		
-		$submissionEmbargo->setSubmissionId($row['submission_id']);
+		$submissionEmbargo->setAssociatedId($row['submission_id']);
 		$submissionEmbargo->setEmbargoMonths($row['embargo_months']);
 		$submissionEmbargo->setEmbargoDate($row['embargo_date']);
 		

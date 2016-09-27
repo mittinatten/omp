@@ -16,7 +16,7 @@
  */
 
 import('classes.monograph.Chapter');
-import('classes.embargo.ChapterEmbargo');
+import('classes.embargo.Embargo');
 
 class ChapterEmbargoDAO extends DAO {
 	/**
@@ -107,18 +107,17 @@ class ChapterEmbargoDAO extends DAO {
 
 	/*
 	 * Inserts a new chapter embargo into table
-	 * @param $chapterEmbargo ChapterEmbargo
+	 * @param $chapterEmbargo Embargo
 	 */
 	function insertObject($chapterEmbargo) {
 		$this->update(
 			sprintf('INSERT INTO submission_chapter_embargoes
-				(chapter_id, submission_id, embargo_months, embargo_date)
+				(chapter_id, embargo_months, embargo_date)
 				VALUES
-				(?, ?, ?, %s)',
+				(?, ?, %s)',
 				$this->datetimetoDB($chapterEmbargo->getEmbargoDate())),
 			array(
-				(int) $chapterEmbargo->getChapterId(),
-				(int) $chapterEmbargo->getSubmissionId(),
+				(int) $chapterEmbargo->getAssociatedId(),
 				(int) $chapterEmbargo->getEmbargoMonths(),
 			)
 		);
@@ -126,19 +125,18 @@ class ChapterEmbargoDAO extends DAO {
 
 	/*
 	 * Updates a chapter embargo
-	 * @param $chapterEmbargo ChapterEmbargo
+	 * @param $chapterEmbargo Embargo
 	 */
 	function updateObject($chapterEmbargo) {
 		$this->update(
 			sprintf('UPDATE	submission_chapter_embargoes
 				SET embargo_months = ?,
 					embargo_date = %s
-				WHERE	chapter_id = ? AND submission_id = ?',
+				WHERE	chapter_id = ?',
 				$this->datetimetoDB($chapterEmbargo->getEmbargoDate())),
 			array(
 				(int) $chapterEmbargo->getEmbargoMonths(),
-				(int) $chapterEmbargo->getChapterId(),
-				(int) $chapterEmbargo->getSubmissionId(),
+				(int) $chapterEmbargo->getAssociatedId(),
 			)
 		);
 	}
@@ -148,7 +146,7 @@ class ChapterEmbargoDAO extends DAO {
 	 * @return ChapterEmbargo
 	 */
 	function newDataObject() {
-		return new ChapterEmbargo();
+		return new Embargo();
 	}
 
 	/**
@@ -157,10 +155,9 @@ class ChapterEmbargoDAO extends DAO {
 	 * @return ChapterEmbargo
 	 */
 	function _fromRow($row) {
-		$chapterEmbargo = new ChapterEmbargo();
+		$chapterEmbargo = new Embargo();
 		
-		$chapterEmbargo->setChapterId($row['chapter_id']);
-		$chapterEmbargo->setSubmissionId($row['submission_id']);
+		$chapterEmbargo->setAssociatedId($row['chapter_id']);
 		$chapterEmbargo->setEmbargoMonths($row['embargo_months']);
 		$chapterEmbargo->setEmbargoDate($row['embargo_date']);
 		

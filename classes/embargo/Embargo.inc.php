@@ -1,26 +1,26 @@
 <?php
 
 /**
- * @file classes/embargo/SubmissionEmbargo.inc.php
+ * @file classes/embargo/Embargo.inc.php
  *
  * Copyright (c) 2014-2016 Simon Fraser University Library
  * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
- * @class SubmissionEmbargo
+ * @class Embargo
  * @ingroup Embargo
  *
- * @brief Submission embargo
+ * @brief Embargo for a document
  *
  * @defgroup Embargo Interface to set embargoes for documents
  */
 
-class SubmissionEmbargo extends DataObject {
+class Embargo extends DataObject {
 
 	/**
 	 * Constructor.
 	 */
-	function SubmissionEmbargo() {
+	function Embargo() {
 		parent::DataObject();
 	}
 
@@ -32,16 +32,16 @@ class SubmissionEmbargo extends DataObject {
 	 * Get Submission ID.
 	 * @return int
 	 */
-	function getSubmissionId() {
-		return $this->getData('submissionId');
+	function getAssociatedId() {
+		return $this->getData('id');
 	}
 
 	/*
 	 * Set Submission ID.
 	 * @param $monographId int
 	 */
-	function setSubmissionId($submissionId) {
-		return $this->setData('submissionId', $submissionId);
+	function setAssociatedId($id) {
+		return $this->setData('id', $id);
 	}
 
 	/*

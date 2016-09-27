@@ -444,8 +444,8 @@ class CatalogEntryCatalogMetadataForm extends Form {
 			$embargo = $embargoDao->getObject($monograph->getId());
 			$isExistingEmbargo = !is_null($embargo);
 			if (!$isExistingEmbargo) {
-				$embargo = new SubmissionEmbargo();
-				$embargo->setSubmissionId($monograph->getId());
+				$embargo = new Embargo();
+				$embargo->setAssociatedId($monograph->getId());
 			}
 			$embargoDate = $this->getData('embargoDate');
 
@@ -466,9 +466,8 @@ class CatalogEntryCatalogMetadataForm extends Form {
 				$chapterEmbargo = $chapterEmbargoDao->getObject($chapter->getID());
 				$isExistingEmbargo = !is_null($embargo);
 				if (!$isExistingEmbargo) {
-					$chapterEmbargo = new ChapterEmbargo();
-					$chapterEmbargo->setSubmissionId($monograph->getId());
-					$chapterEmbargo->setChapterId($chapter->getId());
+					$chapterEmbargo = new Embargo();
+					$chapterEmbargo->setAssociatedId($monograph->getId());
 				}
 				$chapterEmbargoDate = $this->getData($this->getChapterEmbargoFormId($chapter));
 				$chapterEmbargo->setEmbargoDate($chapterEmbargoDate);
