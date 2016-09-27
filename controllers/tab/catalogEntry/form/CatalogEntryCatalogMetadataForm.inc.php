@@ -294,10 +294,15 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		}
 		if ($this->getEnableMonographEmbargo() || $this->getEnableChapterEmbargo()) {
 			$validator = new ValidatorDate();
+			$hasMonographEmbargo = false;
+			$hasChapterEmbargo = false;
 			if ($this->getEnableMonographEmbargo()) {
 				$embargoDate = $this->getData('embargoDate');
 				if ($embargoDate && !($validator->isValid($embargoDate))) {
 					$this->addError('embargoDate', __('submission.catalogEntry.monographEmbargoDateInvalid') . ' : \'' . $embargoDate . '\'');
+				}
+				if ($embargoDate) {
+					$hasMonographEmbargo = true;
 				}
 			}
 
@@ -310,8 +315,14 @@ class CatalogEntryCatalogMetadataForm extends Form {
 					if ($chapterEmbargoDate && !($validator->isValid($chapterEmbargoDate))) {
 						$this->addError($this->getChapterEmbargoFormId($chapter),  __('submission.catalogEntry.chapterEmbargoDateInvalid') . ' : \'' . $chapterEmbargoDate . '\'');
 					}
+					if ($chapterEmbargoDate) {
+						$hasChapterEmbargo = true;
+					}
 					$chapter = $chapters->next();
 				}
+			}
+			if ($hasMonographEmbargo && $hasChapterEmbargo) {
+				$this->addError('embargoDate', 'submission.catalogEntry.doubleEmbargoError');
 			}
 		}
 
@@ -438,13 +449,11 @@ class CatalogEntryCatalogMetadataForm extends Form {
 			}
 			$embargoDate = $this->getData('embargoDate');
 
-			if ($embargoDate) {
-				$embargo->setEmbargoDate($embargoDate);
-				if ($isExistingEmbargo) {
-					$embargoDao->updateObject($embargo);
-				} else {
-					$embargoDao->insertObject($embargo);
-				}
+			$embargo->setEmbargoDate($embargoDate);
+			if ($isExistingEmbargo) {
+				$embargoDao->updateObject($embargo);
+			} else {
+				$embargoDao->insertObject($embargo);
 			}
 		}
 		if ($this->getEnableChapterEmbargo()) {
@@ -462,13 +471,11 @@ class CatalogEntryCatalogMetadataForm extends Form {
 					$chapterEmbargo->setChapterId($chapter->getId());
 				}
 				$chapterEmbargoDate = $this->getData($this->getChapterEmbargoFormId($chapter));
-				if ($embargoDate) {
-					$chapterEmbargo->setEmbargoDate($chapterEmbargoDate);
-					if ($isExistingEmbargo) {
-						$chapterEmbargoDao->updateObject($chapterEmbargo);
-					} else {
-						$chapterEmbargoDao->insertObject($chapterEmbargo);
-					}
+				$chapterEmbargo->setEmbargoDate($chapterEmbargoDate);
+				if ($isExistingEmbargo) {
+					$chapterEmbargoDao->updateObject($chapterEmbargo);
+				} else {
+					$chapterEmbargoDao->insertObject($chapterEmbargo);
 				}
 				$chapter = $chapters->next();
 			}
