@@ -8,11 +8,11 @@
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Embargo
- * @ingroup Embargo
+ * @ingroup embargo
  *
  * @brief Embargo for a document
  *
- * @defgroup Embargo Interface to set embargoes for documents
+ * @defgroup embargo Interface to set embargoes for documents
  */
 
 class Embargo extends DataObject {

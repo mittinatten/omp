@@ -121,7 +121,7 @@ class CatalogEntryCatalogMetadataForm extends Form {
 					if ($chapterEmbargo) {
 						$tmpChapter['embargoDate'] = $chapterEmbargo->getEmbargoDate();
 					}
-					$chapterEmbargoes[$this->getChapterEmbargoFormId($chapter)] = $tmpChapter;
+					$chapterEmbargoes[$this->_getChapterEmbargoFormId($chapter)] = $tmpChapter;
 					$chapter = $chapters->next();
 				}
 				$templateMgr->assign('chapterEmbargoes', $chapterEmbargoes);
@@ -156,8 +156,6 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		$copyrightHolder = $submission->getCopyrightHolder(null);
 		$copyrightYear = $submission->getCopyrightYear();
 		$licenseURL = $submission->getLicenseURL();
-
-		$pressSettingsDao = DAORegistry::getDAO('PressSettingsDAO');
 
 		$this->_data = array(
 			'copyrightHolder' => $submission->getDefaultCopyrightHolder(null), // Localized
@@ -213,15 +211,6 @@ class CatalogEntryCatalogMetadataForm extends Form {
 	}
 
 	/**
-	 * Get ID for chapter embargo date form element
-	 * @param chapter Chapter
-	 * @return string Of the form 'chapterEmbargoDate_XX' where XX is the chapter ID.
-	 */
-	function getChapterEmbargoFormId($chapter) {
-		return 'chapterEmbargoDate_' . $chapter->getId();
-	}
-
-	/**
 	 * Get the extra form parameters.
 	 */
 	function getFormParams() {
@@ -249,7 +238,7 @@ class CatalogEntryCatalogMetadataForm extends Form {
 			$chapters = $chapterDao->getChapters($this->getMonograph()->getId());
 			$chapter = $chapters->next();
 			while ($chapter) {
-				$vars[] = $this->getChapterEmbargoFormId($chapter);
+				$vars[] = $this->_getChapterEmbargoFormId($chapter);
 				$chapter = $chapters->next();
 			}
 		}
@@ -296,9 +285,9 @@ class CatalogEntryCatalogMetadataForm extends Form {
 				$chapters = $chapterDao->getChapters($this->getMonograph()->getId());
 				$chapter = $chapters->next();
 				while ($chapter) {
-					$chapterEmbargoDate = $this->getData($this->getChapterEmbargoFormId($chapter));
+					$chapterEmbargoDate = $this->getData($this->_getChapterEmbargoFormId($chapter));
 					if ($chapterEmbargoDate && !($validator->isValid($chapterEmbargoDate))) {
-						$this->addError($this->getChapterEmbargoFormId($chapter),  __('submission.catalogEntry.chapterEmbargoDateInvalid') . ' : \'' . $chapterEmbargoDate . '\'');
+						$this->addError($this->_getChapterEmbargoFormId($chapter),  __('submission.catalogEntry.chapterEmbargoDateInvalid') . ' : \'' . $chapterEmbargoDate . '\'');
 					}
 					if ($chapterEmbargoDate) {
 						$hasChapterEmbargo = true;
@@ -454,7 +443,7 @@ class CatalogEntryCatalogMetadataForm extends Form {
 					$chapterEmbargo = new Embargo();
 					$chapterEmbargo->setAssociatedId($monograph->getId());
 				}
-				$chapterEmbargoDate = $this->getData($this->getChapterEmbargoFormId($chapter));
+				$chapterEmbargoDate = $this->getData($this->_getChapterEmbargoFormId($chapter));
 				$chapterEmbargo->setEmbargoDate($chapterEmbargoDate);
 				if ($isExistingEmbargo) {
 					$chapterEmbargoDao->updateObject($chapterEmbargo);
@@ -558,6 +547,15 @@ class CatalogEntryCatalogMetadataForm extends Form {
 		}
 		imagedestroy($surrogate);
 		return array('filename' => $surrogateFilename, 'width' => $surrogateWidth, 'height' => $surrogateHeight);
+	}
+
+	/**
+	 * Get ID for chapter embargo date form element
+	 * @param chapter Chapter
+	 * @return string Of the form 'chapterEmbargoDate_XX' where XX is the chapter ID.
+	 */
+	function _getChapterEmbargoFormId($chapter) {
+		return 'chapterEmbargoDate_' . $chapter->getId();
 	}
 }
 

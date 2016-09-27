@@ -758,7 +758,7 @@
 		<field name="chapter_id" type="I8">
 			<NOTNULL/>
 			<UNIQUE/>
-        </field>
+		</field>
 		<field name="embargo_date" type="T">
 			<descr>Embargo date</descr>
 		</field>
@@ -1085,5 +1085,4 @@
 		<field name="payment_method_plugin_name" type="C2" size="80" />
 		<descr>Logs completed (fulfilled) payments.</descr>
 	</table>
-
 </schema>

@@ -14,7 +14,6 @@
 		{fbvElement type="radio" name="workType" id="isEditedVolume-1" value=$smarty.const.WORK_TYPE_EDITED_VOLUME checked=$workType|compare:$smarty.const.WORK_TYPE_EDITED_VOLUME label="submission.workflowType.editedVolume" disabled=$submissionId}
 	{/fbvFormSection}
 {/capture}
-
 {capture assign="additionalFormContent2"}
 	{include file="submission/form/series.tpl" includeSeriesPosition=false}
 {/capture}

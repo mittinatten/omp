@@ -9,9 +9,9 @@
  *
  * @class ChapterEmbargoDAO
  * @ingroup embargo
- * @see ChapterEmbargo
+ * @see Embargo
  *
- * @brief Operations for retrieving and modifying ChapterEmbargo objects.
+ * @brief Operations for retrieving and modifying Embargo objects for chapters.
  *
  */
 

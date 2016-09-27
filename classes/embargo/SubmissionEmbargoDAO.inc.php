@@ -9,9 +9,9 @@
  *
  * @class SubmissionEmbargoDAO
  * @ingroup embargo
- * @see SubmissionEmbargo
+ * @see Embargo
  *
- * @brief Operations for retrieving and modifying ChapterEmbargo objects.
+ * @brief Operations for retrieving and modifying Embargo objects for submissions.
  *
  */
 

@@ -88,7 +88,7 @@ class MonographDAO extends SubmissionDAO {
 				$monograph->getPages(),
 				(int) $monograph->getHideAuthor(),
 				(int) $monograph->getWorkType(),
-				$monograph->getCitations()
+				$monograph->getCitations(),
 			)
 		);
 

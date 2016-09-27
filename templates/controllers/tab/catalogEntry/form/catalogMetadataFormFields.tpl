@@ -46,7 +46,7 @@
 			{fbvElement type="checkbox" id="confirm" checked=$confirm label="submission.catalogEntry.confirm" value="confirm"}
 		{/fbvFormSection}
 	{/if}
-	
+
 	{fbvFormArea id="permissions" title="submission.permissions" class="border"}
 		{fbvFormSection list=true}
 			{fbvElement type="checkbox" id="attachPermissions" label="submission.attachPermissions"}
