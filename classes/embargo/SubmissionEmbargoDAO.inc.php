@@ -27,28 +27,6 @@ class SubmissionEmbargoDAO extends DAO {
 	}
 
 	/**
-	 * Get months of embargo for a given chapter.
-	 * @param $chapterId int
-	 * @return months (int). 0 if no embargo period.
-	 */
-	function getEmbargoMonths($submissionId) {
-		$params = array();
-		$params[] = (int) $submissionId;
-
-		$result = $this->retrieve(
-				'SELECT	embargo_months
-				FROM	submission_embargoes
-				WHERE	submission_id = ?',
-				$params
-		);
-
-		if (!$result->EOF and array_key_exists('embargo_months', $result->fields)) {
-			return $result->fields['embargo_months'];
-		}
-		return 0;
-	}
-
-	/**
 	 * Get embargo date for a given submission.
 	 * @param $submissionId int
 	 * @return date (Y-m-d). Null if no embargo set.
@@ -65,14 +43,6 @@ class SubmissionEmbargoDAO extends DAO {
 			return $result->fields['embargo_date'];
 		}
 		return null;
-	}
-
-	/*
-	 * Has an embargo been set for this submission (can have passed already)
-	 * @return bool
-	 */
-	function submissionHasEmbargo($submissionId) {
-		return (!is_null(getEmbargoDate($submissionid)) or getEmbargoMonths($submissionId) > 0);
 	}
 
 	/*
@@ -111,14 +81,11 @@ class SubmissionEmbargoDAO extends DAO {
 	function insertObject($submissionEmbargo) {
 		$this->update(
 			sprintf('INSERT INTO submission_embargoes
-				(submission_id, embargo_months, embargo_date)
+				(submission_id, embargo_date)
 				VALUES
-				(?, ?, %s)',
+				(?, %s)',
 				$this->datetimetoDB($submissionEmbargo->getEmbargoDate())),
-			array(
-				(int) $submissionEmbargo->getAssociatedId(),
-				(int) $submissionEmbargo->getEmbargoMonths(),
-			)
+			array((int) $submissionEmbargo->getAssociatedId())
 		);
 	}
 
@@ -129,14 +96,10 @@ class SubmissionEmbargoDAO extends DAO {
 	function updateObject($submissionEmbargo) {
 		$this->update(
 			sprintf('UPDATE	submission_embargoes
-				SET embargo_months = ?,
-					embargo_date = %s
+				SET		embargo_date = %s
 				WHERE	submission_id = ?',
 				$this->datetimetoDB($submissionEmbargo->getEmbargoDate())),
-			array(
-				(int) $submissionEmbargo->getEmbargoMonths(),
-				(int) $submissionEmbargo->getAssociatedId(),
-			)
+			array((int) $submissionEmbargo->getAssociatedId())
 		);
 	}
 
@@ -157,7 +120,6 @@ class SubmissionEmbargoDAO extends DAO {
 		$submissionEmbargo = new Embargo();
 		
 		$submissionEmbargo->setAssociatedId($row['submission_id']);
-		$submissionEmbargo->setEmbargoMonths($row['embargo_months']);
 		$submissionEmbargo->setEmbargoDate($row['embargo_date']);
 		
 		return $submissionEmbargo;

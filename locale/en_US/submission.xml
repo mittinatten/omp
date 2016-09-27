@@ -24,9 +24,7 @@
 	<message key="submission.workflowType.editedVolume">Edited Volume: Authors are associated with their own chapter.</message>
 	<message key="submission.workflowType.authoredWork">Monograph: Authors are associated with the book as a whole.</message>
 	<message key="submission.embargo">Embargo</message>
-	<message key="submission.embargoPeriod">Time until work is released online</message>
-	<message key="submission.embargoMonths">{$months} months</message>
-	<message key="submission.permanentEmbargo">Permanent</message>
+	<message key="submission.date">Date (Y-m-d)</message>
 	<message key="submission.monograph">Monograph</message>
 	<message key="submission.published">Production Ready</message>
 	<message key="submission.fairCopy">Fair Copy</message>
@@ -60,10 +58,10 @@
 	<message key="submission.submit.newSubmissionSingle">New Submission</message>
 	<message key="submission.submit.upload">Upload Submission</message>
 	<message key="submission.submit.cancelSubmission">You can complete this submission at a later date by selecting Active Submissions from the Author home.</message>
+	<message key="submission.submit.embargoDateInvalid">Embargo date invalid</message>
 	<message key="submission.submit.selectSeries">Select series (optional)</message>
 	<message key="submission.submit.seriesPosition">Series Position</message>
 	<message key="submission.submit.seriesPosition.description">Examples: Book 2, Volume 2</message>
-	<message key="submission.submit.selectEmbargo">Select embargo period (optional)</message>
 	<message key="submission.submit.form.localeRequired">Please select a submission language.</message>
 	<message key="submission.submit.privacyStatement">Privacy Statement</message>
 	<message key="submission.submit.contributorRole">Contributor's role</message>
@@ -104,12 +102,11 @@
 	<message key="submission.catalogEntry.confirm">Add this book to the public catalog</message>
 	<message key="submission.catalogEntry.confirm.required">Please confirm that the submission is ready to be placed in the catalog.</message>
 	<message key="submission.catalogEntry.isAvailable">This monograph is ready to be included in the public catalog.</message>
-	<message key="submission.catalogEntry.authorEmbargo">Author requested a {$embargoMonths} month embargo.</message>
 	<message key="submission.catalogEntry.monographEmbargoDate">Monograph embargo date</message>
 	<message key="submission.catalogEntry.chapterEmbargoDate">Chapter embargo date</message>
-	<message key="submission.catalogEntry.date">Date (Y-m-d)</message>
 	<message key="submission.catalogEntry.monographEmbargoDateInvalid">Monograph embargo date invalid</message>
 	<message key="submission.catalogEntry.chapterEmbargoDateInvalid">Chapter embargo date invalid</message>
+	<message key="submission.catalogEntry.doubleEmbargoError">Can't have embargoes on both chapters and whole monograph</message>
 
 	<!-- Catalog Entry Tabs -->
 	<message key="submission.catalogEntry.monographMetadata">Monograph</message>

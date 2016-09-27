@@ -41,6 +41,7 @@ class ChapterForm extends Form {
 		$this->addCheck(new FormValidator($this, 'title', 'required', 'metadata.property.validationMessage.title'));
 		$this->addCheck(new FormValidatorPost($this));
 		$this->addCheck(new FormValidatorCSRF($this));
+		$this->addCheck(new FormValidatorDate($this, 'embargoDate', 'optional', 'submission.submit.embargoDateInvalid'));
 	}
 
 	/**
@@ -49,27 +50,12 @@ class ChapterForm extends Form {
 	function fetch($request) {
 		$templateMgr = TemplateManager::getManager($request);
 
-		// Get series for this context
 		$pressId = $this->getMonograph()->getPressId();
 		$pressSettingsDao = DAORegistry::getDAO('PressSettingsDAO');
 		$authorCanSetEmbargo = $pressSettingsDao->getSetting($pressId, 'authorCanSetEmbargo');
 		$enableChapterEmbargo = $pressSettingsDao->getSetting($pressId, 'enableChapterEmbargo');
 		$templateMgr->assign('enableEmbargo', $authorCanSetEmbargo && $enableChapterEmbargo);
-
-		// FIXME: this code is present both here and in SubmissionSubmitStep3Form, where to put it?
-		if ($authorCanSetEmbargo && $enableChapterEmbargo) {
-			$embargoPeriods = $pressSettingsDao->getSetting($pressId, 'embargoPeriods');
-			sort($embargoPeriods);
-			$periodsOptions = array(0 => __('submission.submit.selectEmbargo'));
-			foreach ($embargoPeriods as $i => $t) {
-				if ($t == 0) continue;
-				$periodsOptions += array($t => __('submission.embargoMonths', array('months' => $t)));
-			}
-			if ($pressSettingsDao->getSetting($pressId, 'allowPermanentEmbargo')) {
-				$periodsOptions += array($pressSettingsDao->getSetting($pressId, 'permanentEmbargoPeriod') => __('submission.permanentEmbargo'));
-			}
-			$templateMgr->assign('embargoPeriods',  $periodsOptions);
-		}
+		$templateMgr->assign('embargoDate', $this->getData('embargoDate'));
 
 		return parent::fetch($request);
 	}
@@ -133,7 +119,7 @@ class ChapterForm extends Form {
 
 		if ($chapter) {
 			$chapterEmbargoDao = DAORegistry::getDAO('ChapterEmbargoDAO');
-			$this->setData('embargoMonths', (int) $chapterEmbargoDao->getEmbargoMonths($chapter->getId()));
+			$this->setData('embargoDate', $chapterEmbargoDao->getEmbargoDate($chapter->getId()));
 		}
 	}
 
@@ -142,7 +128,7 @@ class ChapterForm extends Form {
 	 * @see Form::readInputData()
 	 */
 	function readInputData() {
-		$this->readUserVars(array('title', 'subtitle', 'authors', 'files', 'embargoMonths'));
+		$this->readUserVars(array('title', 'subtitle', 'authors', 'files', 'embargoDate'));
 	}
 
 	/**
@@ -186,16 +172,18 @@ class ChapterForm extends Form {
 			array($this, 'updateFilesEntry')
 		);
 
-		$chapterEmbargoDao = DAORegistry::getDAO('ChapterEmbargoDAO');
-		$chapterEmbargo = $chapterEmbargoDao->getObject($chapter->getId());
-		if (!$chapterEmbargo) {
-			$chapterEmbargo = new Embargo();
-			$chapterEmbargo->setAssociatedId($chapter->getId());
-			$chapterEmbargo->setEmbargoMonths($this->getData('embargoMonths'));
-			$chapterEmbargoDao->insertObject($chapterEmbargo);
-		} else {
-			$chapterEmbargo->setEmbargoMonths($this->getData('embargoMonths'));
-			$chapterEmbargoDao->updateObject($chapterEmbargo);
+		if ($embargoDate = $this->getData('embargoDate')) {
+			$chapterEmbargoDao = DAORegistry::getDAO('ChapterEmbargoDAO');
+			$chapterEmbargo = $chapterEmbargoDao->getObject($chapter->getId());
+			if (!$chapterEmbargo) {
+				$chapterEmbargo = new Embargo();
+				$chapterEmbargo->setAssociatedId($chapter->getId());
+				$chapterEmbargo->setEmbargoDate($embargoDate);
+				$chapterEmbargoDao->insertObject($chapterEmbargo);
+			} else {
+				$chapterEmbargo->setEmbargoDate($embargoDate);
+				$chapterEmbargoDao->updateObject($chapterEmbargo);
+			}
 		}
 
 		return true;

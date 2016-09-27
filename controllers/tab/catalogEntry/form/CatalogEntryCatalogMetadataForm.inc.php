@@ -103,18 +103,9 @@ class CatalogEntryCatalogMetadataForm extends Form {
 			$templateMgr->assign('enableMonographEmbargo', $this->getEnableMonographEmbargo());
 			if ($this->getEnableMonographEmbargo()) {
 				$embargo = $submissionEmbargoDao->getObject($monograph->getId());
-				$embargoMonths = 0;
-				$embargoDate = null;
 				if ($embargo) {
-					$embargoMonths = $embargo->getEmbargoMonths();
-					$embargoDate = $embargo->getEmbargoDate();
-					// if no embargo date has been set previously, calculate one
-					if (is_null($embargoDate)) {
-						$embargoDate = $embargo->calculateEmbargoDate();
-					}
+					$templateMgr->assign('embargoDate', $embargo->getEmbargoDate());
 				}
-				$templateMgr->assign('embargoMonths', $embargoMonths);
-				$templateMgr->assign('embargoDate', $embargoDate);
 			}
 
 			$templateMgr->assign('enableChapterEmbargo', $this->getEnableChapterEmbargo());
@@ -123,18 +114,12 @@ class CatalogEntryCatalogMetadataForm extends Form {
 				$chapterEmbargoDao = DAORegistry::getDAO('ChapterEmbargoDAO');
 				$chapters = $chapterDao->getChapters($monograph->getId());
 				$chapter = $chapters->next();
-				$chapterEmbargoes = array()
-;				while ($chapter) {
-					$tmpChapter = array('title' => $chapter->getLocalizedFullTitle(), 'embargoMonths' => 0, 'embargoDate' => null);
+				$chapterEmbargoes = array();
+				while ($chapter) {
+					$tmpChapter = array('title' => $chapter->getLocalizedFullTitle(), 'embargoDate' => null);
 					$chapterEmbargo = $chapterEmbargoDao->getObject($chapter->getID());
 					if ($chapterEmbargo) {
-						$embargoMonths = $chapterEmbargo->getEmbargoMonths();
-						$tmpChapter['embargoMonths'] = $embargoMonths;
-						$embargoDate = $chapterEmbargo->getEmbargoDate();
-						if (is_null($embargoDate)) {
-							$embargoDate = $chapterEmbargo->calculateEmbargoDate();
-						}
-						$tmpChapter['embargoDate'] = $embargoDate;
+						$tmpChapter['embargoDate'] = $chapterEmbargo->getEmbargoDate();
 					}
 					$chapterEmbargoes[$this->getChapterEmbargoFormId($chapter)] = $tmpChapter;
 					$chapter = $chapters->next();
@@ -322,7 +307,7 @@ class CatalogEntryCatalogMetadataForm extends Form {
 				}
 			}
 			if ($hasMonographEmbargo && $hasChapterEmbargo) {
-				$this->addError('embargoDate', 'submission.catalogEntry.doubleEmbargoError');
+				$this->addError('embargoDate', __('submission.catalogEntry.doubleEmbargoError'));
 			}
 		}
 

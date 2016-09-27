@@ -60,10 +60,7 @@
 		{/fbvFormSection}
 		{if $enableMonographEmbargo}
 			{fbvFormSection label="submission.catalogEntry.monographEmbargoDate"}
-				{fbvElement type="text" id="embargoDate" label="submission.catalogEntry.date" value=$embargoDate|date_format:"%Y-%m-%d" size=$fbvStyles.size.SMALL inline=true}
-				{if $embargoMonths > 0}
-					<span class="description">{translate key="submission.catalogEntry.authorEmbargo" embargoMonths=$embargoMonths}</span>
-				{/if}
+				{fbvElement type="text" id="embargoDate" label="submission.date" value=$embargoDate|date_format:"%Y-%m-%d" size=$fbvStyles.size.SMALL inline=true}
 			{/fbvFormSection}
 		{/if}
 		{if $enableChapterEmbargo}
@@ -71,10 +68,7 @@
 				{foreach from=$chapterEmbargoes key=id item=i}
 					<div style="clear: both"> <!-- FIXME: use appropriate CSS class -->
 						<div>{$i.title}</div>
-						{fbvElement type="text" label="submission.catalogEntry.date" value=$i.embargoDate|date_format:"%Y-%m-%d" id=$id size=$fbvStyles.size.SMALL inline=true}
-						{if $i.embargoMonths > 0}
-						<span class="description">{translate key="submission.catalogEntry.authorEmbargo" embargoMonths=$i.embargoMonths}</span>
-						{/if}
+						{fbvElement type="text" label="submission.date" value=$i.embargoDate|date_format:"%Y-%m-%d" id=$id size=$fbvStyles.size.SMALL inline=true}
 					</div>
 					<br /><br />
 				{/foreach}

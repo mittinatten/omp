@@ -29,7 +29,7 @@ class Embargo extends DataObject {
 	//
 
 	/*
-	 * Get Submission ID.
+	 * Get associated ID. Submission or chapter.
 	 * @return int
 	 */
 	function getAssociatedId() {
@@ -37,27 +37,11 @@ class Embargo extends DataObject {
 	}
 
 	/*
-	 * Set Submission ID.
-	 * @param $monographId int
+	 * Set associated ID. Submission or chapter.
+	 * @param $id int
 	 */
 	function setAssociatedId($id) {
 		return $this->setData('id', $id);
-	}
-
-	/*
-	 * Get embargo period.
-	 * @return int
-	 */
-	function getEmbargoMonths() {
-		return $this->getData('embargoMonths');
-	}
-
-	/*
-	 * Set embargo period.
-	 * @param $embargoMonths int
-	 */
-	function setEmbargoMonths($embargoMonths) {
-		return $this->setData('embargoMonths', $embargoMonths);
 	}
 
 	/*
@@ -76,19 +60,6 @@ class Embargo extends DataObject {
 		return $this->setData('embargoDate', $date);
 	}
 
-	/*
-	 * Get embargo date as current-date plus embargo months
-	 * @return string (date, Y-m-d). Null if no embargo months set.
-	 */
-	function calculateEmbargoDate() {
-		$embargoMonths = $this->getEmbargoMonths();
-		if ($embargoMonths > 0) {
-			$date = new DateTime(Core::getCurrentDate());
-			$date->add(new DateInterval('P' . $embargoMonths . 'M'));
-			return $date->format('Y-m-d');
-		}
-		return null;
-	}
 }
 
 ?>

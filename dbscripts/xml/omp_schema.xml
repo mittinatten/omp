@@ -739,10 +739,6 @@
 			<NOTNULL/>
 			<UNIQUE/>
 		</field>
-        <field name="embargo_months" type="I8">
-			<DEFAULT value="0"/>
-			<descr>Months of embargo</descr>
-        </field>
 		<field name="embargo_date" type="T">
 			<descr>Embargo date</descr>
 		</field>
@@ -762,10 +758,6 @@
 		<field name="chapter_id" type="I8">
 			<NOTNULL/>
 			<UNIQUE/>
-        </field>
-        <field name="embargo_months" type="I8">
-			<DEFAULT value="0"/>
-			<descr>Months of embargo</descr>
         </field>
 		<field name="embargo_date" type="T">
 			<descr>Embargo date</descr>

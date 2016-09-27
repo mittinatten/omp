@@ -177,22 +177,4 @@
 		<name>authorCanSetEmbargo</name>
 		<value>0</value>
 	</setting>
-	<setting type="object" locale="0">
-		<name>embargoPeriods</name>
-		<value>
-			<array>
-				<element>6</element>
-				<element>12</element>
-			</array>
-		</value>
-	</setting>
-	<setting type="bool" locale="0">
-		<name>allowPermanentEmbargo</name>
-		<value>0</value>
-	</setting>
-	<setting type="int" locale="0">
-		<name>permanentEmbargoPeriod</name>
-		<!-- 120 years in months -->
-		<value>1440</value>
-	</setting>
 </press_settings>

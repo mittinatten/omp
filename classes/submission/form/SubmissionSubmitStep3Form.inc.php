@@ -26,6 +26,8 @@ class SubmissionSubmitStep3Form extends PKPSubmissionSubmitStep3Form {
 			$submission,
 			new SubmissionMetadataFormImplementation($this)
 		);
+
+		$this->addCheck(new FormValidatorDate($this, 'embargoDate', 'optional', 'submission.submit.embargoDateInvalid'));
 	}
 
 	/**
@@ -36,7 +38,7 @@ class SubmissionSubmitStep3Form extends PKPSubmissionSubmitStep3Form {
 
 		// Include embargo data
 		if ($this->context->getSetting('authorCanSetEmbargo')) {
-			$this->readUserVars(array('embargoMonths'));
+			$this->readUserVars(array('embargoDate'));
 		}
 
 		// Include category information.
@@ -59,24 +61,10 @@ class SubmissionSubmitStep3Form extends PKPSubmissionSubmitStep3Form {
 		$categoryDao = DAORegistry::getDAO('CategoryDAO');
 		$templateMgr->assign('categoriesExist', $categoryDao->getCountByPressId($this->context->getId()) > 0);
 
-		// Get Embargo options for this context
+		// Check if author can request embargo date
 		$authorCanSetEmbargo = $this->context->getSetting('authorCanSetEmbargo');
 		$enableMonographEmbargo = $this->context->getSetting('enableMonographEmbargo');
 		$templateMgr->assign('enableEmbargo', $authorCanSetEmbargo && $enableMonographEmbargo);
-		// FIXME: this code is present both here and in ChapterForm, where to put it?
-		if ($authorCanSetEmbargo && $enableMonographEmbargo) {
-			$embargoPeriods = $this->context->getSetting('embargoPeriods');
-			sort($embargoPeriods);
-			$periodsOptions = array(0 => __('submission.submit.selectEmbargo'));
-			foreach ($embargoPeriods as $i => $t) {
-				if ($t == 0) continue;
-				$periodsOptions += array($t => __('submission.embargoMonths', array('months' => $t)));
-			}
-			if ($this->context->getSetting('allowPermanentEmbargo')) {
-				$periodsOptions += array($this->context->getSetting('permanentEmbargoPeriod') => __('submission.permanentEmbargo'));
-			}
-			$templateMgr->assign('embargoPeriods',  $periodsOptions);
-		}
 
 		return parent::fetch($request);
 	}
@@ -88,19 +76,17 @@ class SubmissionSubmitStep3Form extends PKPSubmissionSubmitStep3Form {
 	 * @return int the submission ID
 	 */
 	function execute($args, $request) {
-		if ($this->context->getSetting('authorCanSetEmbargo')) {
+		if ($this->context->getSetting('authorCanSetEmbargo') && $embargoDate = $this->getData('embargoDate')) {
 			$embargoDAO = DAORegistry::getDAO('SubmissionEmbargoDAO');
 			$embargo = $embargoDAO->getObject($this->submission->getId());
-			$existingEmbargo = !is_null($embargo);
-			if (!$existingEmbargo) {
+			if (!$embargo) {
 				$embargo = new Embargo();
 				$embargo->setAssociatedId($this->submission->getId());
-			}
-			$embargo->setEmbargoMonths($this->getData('embargoMonths'));
-			if ($existingEmbargo) {
-				$embargoDAO->updateObject($embargo);
-			} else {
+				$embargo->setEmbargoDate($embargoDate);
 				$embargoDAO->insertObject($embargo);
+			} else {
+				$embargo->setEmbargoDate($embargoDate);
+				$embargoDAO->updateObject($embargo);
 			}
 		}
 

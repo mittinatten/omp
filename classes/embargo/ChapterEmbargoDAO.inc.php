@@ -27,28 +27,6 @@ class ChapterEmbargoDAO extends DAO {
 	}
 
 	/**
-	 * Get months of embargo for a given chapter.
-	 * @param $chapterId int
-	 * @return months (int). 0 if no embargo period.
-	 */
-	function getEmbargoMonths($chapterId) {
-		$params = array();
-		if (isset($chapterId)) $params[] = (int) $chapterId;
-
-		$result = $this->retrieve(
-				'SELECT	embargo_months
-				FROM	submission_chapter_embargoes
-				WHERE	chapter_id = ?',
-				$params
-		);
-
-		if (!$result->EOF and array_key_exists('embargo_months', $result->fields)) {
-			return $result->fields['embargo_months'];
-		}
-		return 0;
-	}
-
-	/**
 	 * Get embargo date for a given chapter.
 	 * @param $chapterId int
 	 * @return date (Y-m-d). Null if no embargo set.
@@ -67,14 +45,6 @@ class ChapterEmbargoDAO extends DAO {
 			return $result->fields['embargo_date'];
 		}
 		return null;
-	}
-
-	/*
-	 * Has an embargo been set for this chapter (can have passed already)
-	 * @return bool
-	 */
-	function chapterHasEmbargo($chapterId) {
-		return (!is_null(getEmbargoDate($chapterid)) or getEmbargoMonths($chapterId) > 0);
 	}
 
 	/*
@@ -112,14 +82,11 @@ class ChapterEmbargoDAO extends DAO {
 	function insertObject($chapterEmbargo) {
 		$this->update(
 			sprintf('INSERT INTO submission_chapter_embargoes
-				(chapter_id, embargo_months, embargo_date)
+				(chapter_id, embargo_date)
 				VALUES
-				(?, ?, %s)',
+				(?, %s)',
 				$this->datetimetoDB($chapterEmbargo->getEmbargoDate())),
-			array(
-				(int) $chapterEmbargo->getAssociatedId(),
-				(int) $chapterEmbargo->getEmbargoMonths(),
-			)
+			array((int) $chapterEmbargo->getAssociatedId())
 		);
 	}
 
@@ -130,14 +97,10 @@ class ChapterEmbargoDAO extends DAO {
 	function updateObject($chapterEmbargo) {
 		$this->update(
 			sprintf('UPDATE	submission_chapter_embargoes
-				SET embargo_months = ?,
-					embargo_date = %s
+				SET embargo_date = %s
 				WHERE	chapter_id = ?',
 				$this->datetimetoDB($chapterEmbargo->getEmbargoDate())),
-			array(
-				(int) $chapterEmbargo->getEmbargoMonths(),
-				(int) $chapterEmbargo->getAssociatedId(),
-			)
+			array((int) $chapterEmbargo->getAssociatedId())
 		);
 	}
 
@@ -158,7 +121,6 @@ class ChapterEmbargoDAO extends DAO {
 		$chapterEmbargo = new Embargo();
 		
 		$chapterEmbargo->setAssociatedId($row['chapter_id']);
-		$chapterEmbargo->setEmbargoMonths($row['embargo_months']);
 		$chapterEmbargo->setEmbargoDate($row['embargo_date']);
 		
 		return $chapterEmbargo;

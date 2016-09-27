@@ -26,8 +26,6 @@ class EmbargoSettingsForm extends ContextSettingsForm {
 				'enableMonographEmbargo' => 'bool',
 				'enableChapterEmbargo' => 'bool',
 				'authorCanSetEmbargo' => 'bool',
-				'allowPermanentEmbargo' => 'bool',
-				'permanentEmbargoPeriod' => 'int',
 			),
 			'controllers/tab/settings/embargo/form/embargoSettingsForm.tpl',
 			$wizardMode

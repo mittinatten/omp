@@ -23,24 +23,11 @@
 			{fbvElement type="checkbox" name="enableChapterEmbargo" label="manager.settings.embargoChapterEnable" id="enableChapterEmbargo" checked=$enableChapterEmbargo}
 			{fbvElement type="checkbox" name="authorCanSetEmbargo" label="manager.settings.authorCanSetEmbargo" id="authorCanSetEmbargo" checked=$authorCanSetEmbargo}
 	    {/fbvFormSection}
-		{fbvFormSection id="selectEmbargoPeriods" label="manager.settings.embargoPeriods" list="false"}
-			{translate key="manager.settings.embargoPeriodsDescription"}
-			<div id="embargoPeriodsGridContainer">
-				{url|assign:embargoPeriodsGridUrl router=$smarty.const.ROUTE_COMPONENT component="grid.settings.embargoPeriods.EmbargoPeriodsGridHandler" op="fetchGrid" escape=false}
-				{load_url_in_div id="embargoPeriodsGridContainer" url=$embargoPeriodsGridUrl}
-			</div>
-		{/fbvFormSection}
-		{fbvFormSection id="permanentEmbargo" label="manager.settings.permanentEmbargo" list="false"}
-			{fbvElement type="checkbox" name="allowPermanentEmbargo" label="manager.settings.allowPermanentEmbargo" id="allowPermanentEmbargo" checked=$allowPermanentEmbargo}
-		{/fbvFormSection}
-		{fbvFormSection id="permanentEmbargoLength" label="manager.settings.permanentEmbargoPeriod" list="false"}
-			{fbvElement type="text" name="permanentEmbargoPeriod" id="permanentEmbargoPeriod" value=$permanentEmbargoPeriod label="manager.settings.permanentEmbargoPeriodDescription"}
-		{/fbvFormSection}
 	{/fbvFormArea}
 	
 	<div class="separator"></div>
 
 	{if !$wizardMode}
-		{fbvFormButtons id="embargoPeriodsFormSubmit" submitText="common.save" hideCancel=true}
+		{fbvFormButtons id="embargoSettingsFormSubmit" submitText="common.save" hideCancel=true}
 	{/if}
 </form>
