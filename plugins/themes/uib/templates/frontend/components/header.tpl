@@ -40,26 +40,25 @@
 		{* Header *}
 		<header class="pkp_structure_head" id="headerNavigationContainer" role="banner">
 			<div class="pkp_head_wrapper">
-				<img class="uib_logo" src="{$baseUrl}/plugins/themes/uib/UiB-logo-inverted.svg" />
 				<div class="pkp_site_name_wrapper">
-					<div class="pkp_site_name">
-						{if $currentJournal && $multipleContexts}
-							{url|assign:"homeUrl" journal="index" router=$smarty.const.ROUTE_PAGE}
-						{else}
-							{url|assign:"homeUrl" page="index" router=$smarty.const.ROUTE_PAGE}
-						{/if}
-						{if $requestedOp == 'index'}
-							<h1>
-						{else}
-							<div>
-						{/if}
-								<a href="{$homeUrl}" class="is_text">{$displayPageHeaderTitle}</a>
-						{if $requestedOp == 'index'}
-							</h1>
-						{else}
-							</div>
-						{/if}
-					</div>
+					<img class="uib_logo" src="{$baseUrl}/plugins/themes/uib/UiB-logo-inverted.svg" />
+					{if $requestedOp == 'index'}
+						<h1 class="pkp_site_name">
+					{else}
+						<div class="pkp_site_name">
+					{/if}
+{*	<div class="pkp_site_name"> *}
+					{if $currentJournal && $multipleContexts}
+						{url|assign:"homeUrl" journal="index" router=$smarty.const.ROUTE_PAGE}
+					{else}
+						{url|assign:"homeUrl" page="index" router=$smarty.const.ROUTE_PAGE}
+					{/if}
+						<a href="{$homeUrl}" class="is_text">{$displayPageHeaderTitle}</a>
+					{if $requestedOp == 'index'}
+						</h1>
+					{else}
+						</div>
+					{/if}
 				</div>
 
 				{* Primary site navigation *}

@@ -43,7 +43,7 @@
 // spacings should also use this baseline. However, in some cases with inline
 // elements it is more appropriate to use an `em` spacing.
 //
-@base:                   10px;
+@base:                   8px;
 @half:                   @base / 2;
 @double:                 @base * 2;
 @triple:                 @base * 3;
@@ -53,18 +53,21 @@
 //
 // Typography
 //
-@font:                   "Noto Sans", Arial, Helvetica, sans-serif;
-@font-sml:               13px;
+@font:                   "Myriad Pro", Myriad, "Noto Sans", Arial, Helvetica, sans-serif;
+@font-serif:             "Adobe Garamond Pro", "Times New Roman", Times, Georgia, "DejaVu Serif", serif;
+@font-sml:               0.9rem;
 @line-sml:               @double;
 @font-base:              14px;
-@line-base:              @double;
-@line-base-large:        @line-base + 5; // large blocks of text
-@font-bump:              16px;
-@line-bump:              @double;
-@font-lead:              18px;
+@line-base:              @double + 4;
+@line-base-large:        @line-base + 6; // large blocks of text
+@font-bump:              1.125rem;
+@line-bump:              @double + 5;
+@font-lead:              1.2rem;
 @line-lead:              @triple;
-@font-header:            24px;
+@font-header:            1.3rem;
 @line-header:            @triple;
+
+@header-letter-spacing:  0.178125rem;
 
 // Font weights
 @normal:                 400;

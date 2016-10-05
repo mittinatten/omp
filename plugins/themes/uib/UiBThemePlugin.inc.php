@@ -74,7 +74,7 @@ class UiBThemePlugin extends ThemePlugin {
 	 */
 	function printJavascript() {
 		$request = Registry::get('request');
-		echo '<script src="' . $request->getBaseUrl() . '/' . $this->getPluginPath() . '/js/main.js" type="text/javascript"></script>';
+		//echo '<script src="' . $request->getBaseUrl() . '/' . $this->getPluginPath() . '/js/main.js" type="text/javascript"></script>';
 		return false;
 	}
 
