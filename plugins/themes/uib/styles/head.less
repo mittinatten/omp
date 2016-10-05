@@ -22,22 +22,22 @@
 // Site logo/nav on same line on larger screens
 .has_site_logo {
 	.uib_logo {
-		height: 60px;
-		float: left;
-		margin-right: @double;
+		display: none;
 	}
 	.pkp_site_name_wrapper {
-		margin-top: @base;
+		margin-top: @double;
+		display: flex;
+		align-items: center;
 	}
 	@media(min-width: @screen-desktop) {
 		img.uib_logo {
 			height: 71px;
 			margin-bottom: @double;
+			margin-right: @double;
+			display: block;
 		}
 
 		.pkp_site_name_wrapper {
-			display: flex;
-			align-items: center;
 			padding-right: @triple;
 			margin-top: 0;
 		}
@@ -117,11 +117,9 @@
 
 	> li {
 		text-transform: uppercase;
-
 		> a {
 			margin: 0 1em;
 			padding: @pkp_nav_primary_row_el_padding 0;
-			//border-bottom: 2px solid transparent;
 			color: @text-on-bg;
 
 			&:hover,
@@ -129,7 +127,6 @@
 				color: @text-on-bg;
 				outline: 0;
 				text-decoration: underline;
-				//border-color: @text-on-bg;
 			}
 		}
 
@@ -155,6 +152,7 @@
 
 	ul {
 		text-align: left;
+		font-size: @font-sml;
 		
 		a {
 			padding-top: @base;
@@ -230,25 +228,6 @@
 		text-align: center;
 		color: @text-light;
 	}
-	/*
-	.search_cancel{
-
-		&:before {
-			&:extend(.fa);
-			content: @fa-var-times;
-			width: @double;
-			height: @double;
-			line-height: @double;
-		}
-
-		&:hover,
-		&:focus {
-			outline: none;
-			border-radius: 50%;
-			background: @no;
-			color: #fff;
-		}
-	}*/
 
 	.search_loading {
 		.pkp_spinner;
@@ -256,12 +235,11 @@
 	}
 
 	@media(min-width: @screen-desktop) {
-		//position: absolute;
 		display: flex;
 		align-items: center;
 		top: 0;
 		right: 0;
-		height: @quadruple;
+		height: @quadruple + @base;
 		min-width: 100px;
 		padding: 0;
 		font-size: @font-bump;
@@ -269,7 +247,7 @@
 		transition: min-width 0.4s;
 		text-align: right;
 		overflow-x: hidden;
-		margin-left: @double;
+		margin-left: @triple;
 
 		button {
 			position: absolute;
@@ -278,15 +256,13 @@
 		}
 
 		input[type="text"] {
-			//position: absolute;
 			top: 0;
 			left: 0;
 			width: 200px;
 			padding-left: 2*@radius;
-			//padding-left: @base;
 			border: none;
 			background-color: @bg;
-			//height: @quadruple;
+			height: @quadruple;
 		}
 
 		.search_controls {
@@ -294,98 +270,17 @@
 		}
 
 		.search_prompt {
-			height: @quadruple;
 			display: inline-block;
 			position: relative;
-			padding: @pkp_nav_primary_row_el_padding @base;
 			color: @text-on-bg;
 			cursor: pointer;
 			margin-left: @base;
-
+			
 			&:before {
 				font-size: @font-bump;
 				margin-right: 0.25em;
 			}
-			/*
-			&:hover,
-			&:focus {
-				outline: 0;
-				padding-bottom: @pkp_nav_primary_row_el_padding - 2;
-				border-bottom: 2px solid @text-on-bg;
-			}*/
 		}
-		/*
-		&.is_open {
-			min-width: 100%;
-			background: @bg;
-
-			input[type="text"] {
-				width: 100%;
-				max-width: 100%;
-				line-height: @quadruple;
-				height: @quadruple;
-				top: 0;
-				left: 0;
-				padding-left: 0.5em;
-				padding-right: 180px; // try to stop before the search button, but this can change with different translations
-				border: none;
-				font-size: @font-bump;
-				background: @bg-shade;
-
-				&:hover {
-					background: @bg;
-				}
-
-				&:focus {
-					outline: 0;
-					background: @bg;
-				}
-			}
-
-			.search_prompt {
-				background: @bg;
-				border-left: @bg-border;
-				color: @primary;
-
-				&:hover,
-				&:focus {
-					border-bottom-color: @primary;
-				}
-			}
-		}
-
-		&.is_searching {
-
-			input[type="text"] {
-				opacity: 0.5;
-
-				&:hover,
-				&:focus {
-					border-color: @bg;
-				}
-			}
-
-			.search_prompt {
-				background: @bg;
-				border-left: @bg-border;
-				color: @primary;
-
-				&:hover,
-				&:focus {
-					background: @bg;
-					color: @primary-lift;
-				}
-			}
-
-			.search_cancel {
-				display: none;
-			}
-
-			.search_loading {
-				display: block;
-			}
-		}
-		*/
 	}
 }
 
@@ -411,7 +306,7 @@
 	a {
 		padding-top: @half;
 		padding-bottom: @half;
-		line-height: @line-sml;
+		line-height: @line-base;
 	}
 
 	> li > a:focus,
